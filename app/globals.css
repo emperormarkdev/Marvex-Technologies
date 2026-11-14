@@ -1,26 +1,281 @@
 @import "tailwindcss";
 
+@theme {
+  /* Marvex brand */
+  --color-brand: #00c47a;
+  --color-brand-dark: #009e62;
+  --color-brand-pale: #e8faf2;
+
+  /* Clean modern neutrals — pure black & neutral grays in dark mode (zero blue tint) */
+  --color-surface: #ffffff;
+  --color-surface-card: #ffffff;
+  --color-surface-elevated: #ffffff;
+  --color-ink: #0a0a0a;
+  --color-muted: #52525b;
+  --color-line: #e4e4e7;
+  --color-mist: #f4f4f5;
+  --color-night: #080808;
+  --color-night-card: #141414;
+
+  /* Poppins everywhere */
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  --in-oklab: ;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Raw light and dark token pairs (True Black dark mode, no dark blue) */
+  --surface-light: #ffffff;
+  --surface-dark: #000000;
+  --surface-card-light: #ffffff;
+  --surface-card-dark: #111111;
+  --surface-elevated-light: #ffffff;
+  --surface-elevated-dark: #222222;
+  --ink-light: #0a0a0a;
+  --ink-dark: #ffffff;
+  --muted-light: #52525b;
+  --muted-dark: #b4b4bc;
+  --line-light: #e4e4e7;
+  --line-dark: #27272a;
+  --mist-light: #f4f4f5;
+  --mist-dark: #0a0a0a;
+  --brand-dark-light: #009e62;
+  --brand-dark-dark: #22e59b;
+  --brand-pale-light: #e8faf2;
+  --brand-pale-dark: rgba(0, 196, 122, 0.18);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --color-surface: var(--surface-light);
+  --color-surface-card: var(--surface-card-light);
+  --color-surface-elevated: var(--surface-elevated-light);
+  --color-ink: var(--ink-light);
+  --color-muted: var(--muted-light);
+  --color-line: var(--line-light);
+  --color-mist: var(--mist-light);
+  --color-brand-dark: var(--brand-dark-light);
+  --color-brand-pale: var(--brand-pale-light);
+
+  /* MANDATORY: Fallback for browsers without light-dark support */
+  @media (prefers-color-scheme: dark) {
+    --color-surface: var(--surface-dark);
+    --color-surface-card: var(--surface-card-dark);
+    --color-surface-elevated: var(--surface-elevated-dark);
+    --color-ink: var(--ink-dark);
+    --color-muted: var(--muted-dark);
+    --color-line: var(--line-dark);
+    --color-mist: var(--mist-dark);
+    --color-brand-dark: var(--brand-dark-dark);
+    --color-brand-pale: var(--brand-pale-dark);
+  }
+
+  /* Dynamic light-dark() tokens */
+  @supports (color: light-dark(white, black)) {
+    --color-surface: light-dark(var(--surface-light), var(--surface-dark));
+    --color-surface-card: light-dark(
+      var(--surface-card-light),
+      var(--surface-card-dark)
+    );
+    --color-surface-elevated: light-dark(
+      var(--surface-elevated-light),
+      var(--surface-elevated-dark)
+    );
+    --color-ink: light-dark(var(--ink-light), var(--ink-dark));
+    --color-muted: light-dark(var(--muted-light), var(--muted-dark));
+    --color-line: light-dark(var(--line-light), var(--line-dark));
+    --color-mist: light-dark(var(--mist-light), var(--mist-dark));
+    --color-brand-dark: light-dark(
+      var(--brand-dark-light),
+      var(--brand-dark-dark)
+    );
+    --color-brand-pale: light-dark(
+      var(--brand-pale-light),
+      var(--brand-pale-dark)
+    );
+  }
+
+  /* MANDATORY: Automatically adapt native UI to user system preferences */
+  color-scheme: light dark;
+  accent-color: var(--color-brand);
+
+  &:has(> head > meta[name="color-scheme"][content="dark"]) {
+    color-scheme: dark;
+    --color-surface: var(--surface-dark);
+    --color-surface-card: var(--surface-card-dark);
+    --color-surface-elevated: var(--surface-elevated-dark);
+    --color-ink: var(--ink-dark);
+    --color-muted: var(--muted-dark);
+    --color-line: var(--line-dark);
+    --color-mist: var(--mist-dark);
+    --color-brand-dark: var(--brand-dark-dark);
+    --color-brand-pale: var(--brand-pale-dark);
+  }
+  &:has(> head > meta[name="color-scheme"][content="light"]) {
+    color-scheme: light;
+    --color-surface: var(--surface-light);
+    --color-surface-card: var(--surface-card-light);
+    --color-surface-elevated: var(--surface-elevated-light);
+    --color-ink: var(--ink-light);
+    --color-muted: var(--muted-light);
+    --color-line: var(--line-light);
+    --color-mist: var(--mist-light);
+    --color-brand-dark: var(--brand-dark-light);
+    --color-brand-pale: var(--brand-pale-light);
   }
 }
 
+@supports (background: linear-gradient(in oklab, white, black)) {
+  :root {
+    --in-oklab: in oklab;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  letter-spacing: -0.018em;
+  line-height: 1.55;
+  text-align: start;
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tight letter-spacing on headings & balanced wrapping */
+:where(h1, h2, h3, h4) {
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+:where(p, li, dd) {
+  text-wrap: pretty;
+}
+
+/* Accessible focus rings & smooth press feedback */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-brand-dark);
+  outline-offset: 3px;
+}
+
+:where(button, a.btn-press) {
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease,
+    scale 120ms ease-out;
+}
+
+:where(button, a.btn-press):active {
+  scale: 0.98;
+}
+
+::selection {
+  background: var(--color-brand);
+  color: #ffffff;
+}
+
+/* Theme toggle icon visibility driven purely by CSS color-scheme state */
+.theme-icon-sun {
+  display: none;
+}
+.theme-icon-moon {
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(:has(> head > meta[name="color-scheme"][content="light"])) {
+    .theme-icon-sun {
+      display: block;
+    }
+    .theme-icon-moon {
+      display: none;
+    }
+  }
+}
+
+:root:has(> head > meta[name="color-scheme"][content="dark"]) {
+  .theme-icon-sun {
+    display: block;
+  }
+  .theme-icon-moon {
+    display: none;
+  }
+}
+
+/* Smooth moving client logo marquee */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+.marquee-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+}
+
+/* Soft atmospheric hero & pure-black bento surfaces (zero dark blue) */
+.hero-glow {
+  background:
+    radial-gradient(
+      65% 55% at 50% 0% var(--in-oklab),
+      rgba(0, 196, 122, 0.14) 0%,
+      rgba(0, 196, 122, 0.03) 55%,
+      transparent 100%
+    ),
+    var(--color-surface);
+}
+
+.dark-bento {
+  background:
+    radial-gradient(
+      60% 50% at 50% 0% var(--in-oklab),
+      rgba(0, 196, 122, 0.14) 0%,
+      transparent 70%
+    ),
+    #0a0a0a;
+  border: 1px solid #262626;
+}
+
+/* Progressive scroll reveal */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal.js-ready {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .reveal.js-ready.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
 }
