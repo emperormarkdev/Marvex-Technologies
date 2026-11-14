@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import {
@@ -10,10 +11,19 @@ import { BigCta } from "@/components/home/Closing";
 import RevealObserver from "@/components/ui/RevealObserver";
 import { processSteps } from "@/data/content";
 
-export const metadata = {
-  title: "How We Work | Marvex Technologies",
+export const metadata: Metadata = {
+  title: "How We Work",
   description:
-    "Five simple steps from your first chat to launch, staff training, and ongoing support.",
+    "Five simple steps from your first chat to launch, staff training, and ongoing support, with a clear plan and fixed price upfront.",
+  alternates: {
+    canonical: "/process",
+  },
+  openGraph: {
+    title: "How We Work | Marvex Technologies",
+    description:
+      "Our five step process: listen & learn, clear plan & fixed price, design & build with weekly previews, launch & staff training, and ongoing support.",
+    url: "https://marvextechnologies.vercel.app/process",
+  },
 };
 
 export default function ProcessPage() {

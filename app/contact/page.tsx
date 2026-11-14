@@ -1,15 +1,8 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import {
-  ArrowRight,
-  CheckCircle2,
-  Loader2,
-  Mail,
-  MapPin,
-  Phone,
-} from "lucide-react";
+import { ArrowRight, CheckCircle2, Mail, MapPin, Phone } from "lucide-react";
 import { Container, Eyebrow, Reveal } from "@/components/ui/primitives";
 import RevealObserver from "@/components/ui/RevealObserver";
 import { services, siteConfig } from "@/data/content";
@@ -31,14 +24,29 @@ function ContactInner() {
   const [form, setForm] = useState({
     name: "",
     company: "",
-    email: "",
     phone: "",
     service: preselected,
     message: "",
   });
-  const [sending, setSending] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const mailtoUrl = useMemo(() => {
+    const selectedService =
+      services.find((s) => s.slug === form.service)?.title ?? form.service;
+    const subject = `New Project Inquiry from ${form.name || form.company || "Website"}`;
+    const body = [
+      `Name: ${form.name}`,
+      form.company ? `Business: ${form.company}` : "",
+      `Phone: ${form.phone}`,
+      selectedService ? `Service: ${selectedService}` : "",
+      ``,
+      `Message:`,
+      form.message,
+    ]
+      .filter(Boolean)
+      .join("\n");
+    return `mailto:${siteConfig.emailRecipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  }, [form]);
 
   const set =
     (k: keyof typeof form) =>
@@ -48,39 +56,6 @@ function ContactInner() {
       >
     ) =>
       setForm((f) => ({ ...f, [k]: e.target.value }));
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSending(true);
-    setErrorMsg(null);
-
-    const selectedService =
-      services.find((s) => s.slug === form.service)?.title ?? form.service;
-
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          service: selectedService,
-        }),
-      });
-      const data = (await res.json()) as { ok?: boolean; error?: string };
-
-      if (!res.ok || !data.ok) {
-        setErrorMsg(
-          data.error ?? "Could not send message. Please try again shortly."
-        );
-      } else {
-        setSubmitted(true);
-      }
-    } catch {
-      setErrorMsg("Network error while sending message. Please try again.");
-    } finally {
-      setSending(false);
-    }
-  };
 
   return (
     <>
@@ -93,8 +68,8 @@ function ContactInner() {
               Let&apos;s talk about your project.
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-              Send us a direct message below or reach out by phone or email. We
-              respond within one business day.
+              Send us a message below or reach out directly by phone or email.
+              We respond within one business day.
             </p>
           </Reveal>
         </Container>
@@ -111,34 +86,27 @@ function ContactInner() {
                       <CheckCircle2 size={28} aria-hidden="true" />
                     </span>
                     <h2 className="mt-5 font-display text-2xl font-semibold tracking-[-0.03em] text-ink">
-                      Message sent directly to our team
+                      Thank you for reaching out
                     </h2>
                     <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">
-                      Thank you for reaching out. We have received your message
-                      and will get back to you within one business day. You can
-                      also call us on {siteConfig.phoneDisplay}.
+                      Your email app has been opened with your project details.
+                      You can also call us directly on {siteConfig.phoneDisplay}.
                     </p>
                     <button
                       type="button"
-                      onClick={() => {
-                        setSubmitted(false);
-                        setForm({
-                          name: "",
-                          company: "",
-                          email: "",
-                          phone: "",
-                          service: preselected,
-                          message: "",
-                        });
-                      }}
+                      onClick={() => setSubmitted(false)}
                       className="btn-press mt-6 rounded-xl border border-line bg-surface-elevated px-5 py-2.5 text-sm font-medium text-ink hover:border-brand"
                     >
-                      Send another message
+                      Edit message
                     </button>
                   </div>
                 ) : (
                   <form
-                    onSubmit={handleSubmit}
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      window.location.href = mailtoUrl;
+                      setSubmitted(true);
+                    }}
                     className="grid gap-5 sm:grid-cols-2"
                   >
                     <div>
@@ -176,23 +144,6 @@ function ContactInner() {
 
                     <div>
                       <label
-                        htmlFor="email"
-                        className="mb-2 block text-xs font-medium text-ink"
-                      >
-                        Email Address
-                      </label>
-                      <input
-                        id="email"
-                        type="email"
-                        value={form.email}
-                        onChange={set("email")}
-                        placeholder="you@company.com"
-                        className={inputCls}
-                      />
-                    </div>
-
-                    <div>
-                      <label
                         htmlFor="phone"
                         className="mb-2 block text-xs font-medium text-ink"
                       >
@@ -209,7 +160,7 @@ function ContactInner() {
                       />
                     </div>
 
-                    <div className="sm:col-span-2">
+                    <div>
                       <label
                         htmlFor="service"
                         className="mb-2 block text-xs font-medium text-ink"
@@ -258,36 +209,13 @@ function ContactInner() {
                       />
                     </div>
 
-                    {errorMsg && (
-                      <div
-                        role="alert"
-                        className="sm:col-span-2 rounded-2xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-xs font-medium text-red-500"
-                      >
-                        {errorMsg}
-                      </div>
-                    )}
-
                     <div className="sm:col-span-2 pt-2">
                       <button
                         type="submit"
-                        disabled={sending}
-                        className="btn-press inline-flex w-full items-center justify-center gap-2 rounded-xl bg-ink px-8 py-4 text-sm font-medium text-surface hover:bg-brand hover:text-white disabled:opacity-60 sm:w-auto"
+                        className="btn-press inline-flex w-full items-center justify-center gap-2 rounded-xl bg-ink px-8 py-4 text-sm font-medium text-surface hover:bg-brand hover:text-white sm:w-auto"
                       >
-                        {sending ? (
-                          <>
-                            <Loader2
-                              size={16}
-                              className="animate-spin"
-                              aria-hidden="true"
-                            />
-                            Sending message...
-                          </>
-                        ) : (
-                          <>
-                            Send Message
-                            <ArrowRight size={16} aria-hidden="true" />
-                          </>
-                        )}
+                        Send Message
+                        <ArrowRight size={16} aria-hidden="true" />
                       </button>
                     </div>
                   </form>

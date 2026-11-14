@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Check, Clock } from "lucide-react";
 import { Container, Eyebrow, Reveal } from "@/components/ui/primitives";
@@ -5,10 +6,19 @@ import { BigCta } from "@/components/home/Closing";
 import RevealObserver from "@/components/ui/RevealObserver";
 import { services } from "@/data/content";
 
-export const metadata = {
-  title: "Services | Marvex Technologies",
+export const metadata: Metadata = {
+  title: "Services",
   description:
-    "Company websites, mobile apps, custom web apps, online stores, business software, POS systems, UI/UX design, automation, and ongoing support.",
+    "Company websites, mobile apps (iOS & Android), custom web apps, online stores, business software, POS systems, UI/UX design, automation, and ongoing support.",
+  alternates: {
+    canonical: "/services",
+  },
+  openGraph: {
+    title: "Services | Marvex Technologies",
+    description:
+      "Explore our software and digital services: websites, mobile apps, online stores, POS systems, custom business software, and ongoing care.",
+    url: "https://marvextechnologies.vercel.app/services",
+  },
 };
 
 export default function ServicesPage() {

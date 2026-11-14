@@ -1,13 +1,20 @@
 import type { MetadataRoute } from "next";
 
-const base = "https://marvextechnologies.com"; // TODO: confirm client domain
+const base = "https://marvextechnologies.vercel.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ["", "/services", "/clients", "/process", "/contact"];
+  const routes = [
+    { path: "", priority: 1.0, changeFrequency: "weekly" as const },
+    { path: "/services", priority: 0.9, changeFrequency: "weekly" as const },
+    { path: "/clients", priority: 0.8, changeFrequency: "monthly" as const },
+    { path: "/process", priority: 0.8, changeFrequency: "monthly" as const },
+    { path: "/contact", priority: 0.9, changeFrequency: "monthly" as const },
+  ];
+
   return routes.map((r) => ({
-    url: `${base}${r}`,
-    lastModified: "2026-11-14",
-    changeFrequency: r === "" ? "weekly" : "monthly",
-    priority: r === "" ? 1 : 0.8,
+    url: `${base}${r.path}`,
+    lastModified: new Date(),
+    changeFrequency: r.changeFrequency,
+    priority: r.priority,
   }));
 }

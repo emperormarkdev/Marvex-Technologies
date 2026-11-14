@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   Building2,
   ShoppingBag,
@@ -18,10 +19,19 @@ import { BigCta } from "@/components/home/Closing";
 import RevealObserver from "@/components/ui/RevealObserver";
 import { sectors } from "@/data/content";
 
-export const metadata = {
-  title: "Companies We Keep | Marvex Technologies",
+export const metadata: Metadata = {
+  title: "Companies We Keep",
   description:
-    "Trusted by shops, restaurants, farms, and growing businesses.",
+    "Trusted by retail stores, supermarkets, restaurants, logistics companies, farms, and growing businesses across Nigeria.",
+  alternates: {
+    canonical: "/clients",
+  },
+  openGraph: {
+    title: "Companies We Keep | Marvex Technologies",
+    description:
+      "See the businesses and industries that trust Marvex Technologies for websites, apps, and custom business software.",
+    url: "https://marvextechnologies.vercel.app/clients",
+  },
 };
 
 const sectorIcons = [
