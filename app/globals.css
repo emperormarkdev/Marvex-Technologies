@@ -3,7 +3,7 @@
 @theme {
   /* Marvex brand */
   --color-brand: #00c47a;
-  --color-brand-dark: #009e62;
+  --color-brand-dark: #007a4c;
   --color-brand-pale: #e8faf2;
 
   /* Clean modern neutrals — pure black & neutral grays in dark mode (zero blue tint) */
@@ -40,7 +40,7 @@
   --line-dark: #27272a;
   --mist-light: #f4f4f5;
   --mist-dark: #0a0a0a;
-  --brand-dark-light: #009e62;
+  --brand-dark-light: #007a4c;
   --brand-dark-dark: #22e59b;
   --brand-pale-light: #e8faf2;
   --brand-pale-dark: rgba(0, 196, 122, 0.18);
@@ -252,6 +252,12 @@ body {
     ),
     #0a0a0a;
   border: 1px solid #262626;
+}
+
+/* Defer off-screen rendering for heavy below-the-fold sections */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
 }
 
 /* Progressive scroll reveal */

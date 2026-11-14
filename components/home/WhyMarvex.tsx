@@ -32,7 +32,7 @@ const points = [
 export default function WhyMarvex() {
   return (
     <section
-      className="border-y border-line bg-surface py-20 lg:py-28"
+      className="cv-auto border-y border-line bg-surface py-20 lg:py-28"
       aria-label="Why choose Marvex"
     >
       <Container>

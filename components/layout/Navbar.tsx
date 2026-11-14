@@ -10,20 +10,22 @@ export function Logo({ dark = false }: { dark?: boolean }) {
   return (
     <Link
       href="/"
-      className="group inline-flex items-baseline select-none"
+      className="group inline-flex min-h-10 items-center select-none"
       aria-label="Marvex Technologies home"
     >
-      <span
-        className={`font-display text-2xl font-bold leading-none tracking-[-0.06em] ${
-          dark ? "text-white" : "text-ink"
-        }`}
-      >
-        Marvex
+      <span className="inline-flex items-baseline">
+        <span
+          className={`font-display text-2xl font-bold leading-none tracking-[-0.06em] ${
+            dark ? "text-white" : "text-ink"
+          }`}
+        >
+          Marvex
+        </span>
+        <span
+          className="ml-0.5 inline-block h-2 w-2 rounded-full bg-brand transition-transform duration-200 group-hover:scale-125"
+          aria-hidden="true"
+        />
       </span>
-      <span
-        className="ml-0.5 inline-block h-2 w-2 rounded-full bg-brand transition-transform duration-200 group-hover:scale-125"
-        aria-hidden="true"
-      />
     </Link>
   );
 }
@@ -136,7 +138,7 @@ export default function Navbar() {
                 key={l.href}
                 href={l.href}
                 aria-current={active ? "page" : undefined}
-                className={`rounded-full px-4 py-1.5 text-sm font-medium tracking-[-0.02em] transition-all ${
+                className={`inline-flex min-h-9 items-center rounded-full px-4 py-1.5 text-sm font-medium tracking-[-0.02em] transition-all ${
                   active
                     ? "bg-surface-elevated text-ink shadow-xs ring-1 ring-line"
                     : "text-muted hover:text-ink"
@@ -152,7 +154,7 @@ export default function Navbar() {
           <ThemeToggle />
           <Link
             href="/contact"
-            className="btn-press inline-flex items-center gap-2 rounded-xl bg-ink px-5 py-2.5 text-sm font-medium tracking-[-0.02em] text-surface hover:bg-brand hover:text-white"
+            className="btn-press inline-flex items-center gap-2 rounded-xl bg-ink px-5 py-2.5 text-sm font-medium tracking-[-0.02em] text-surface hover:bg-brand hover:text-neutral-950"
           >
             Start a Project
             <ArrowRight size={15} aria-hidden="true" />

@@ -14,7 +14,7 @@ import { faqs } from "@/data/content";
 export function Faq() {
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <section className="bg-surface py-20 lg:py-28" aria-label="FAQ">
+    <section className="cv-auto bg-surface py-20 lg:py-28" aria-label="FAQ">
       <Container>
         <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr]">
           <Reveal>
@@ -27,7 +27,7 @@ export function Faq() {
               />
               <Link
                 href="/contact"
-                className="btn-press mt-7 inline-flex items-center gap-2 rounded-xl bg-ink px-6 py-3.5 text-sm font-medium text-surface hover:bg-brand hover:text-white"
+                className="btn-press mt-7 inline-flex items-center gap-2 rounded-xl bg-ink px-6 py-3.5 text-sm font-medium text-surface hover:bg-brand hover:text-neutral-950"
               >
                 Ask us a question
                 <ArrowRight size={15} aria-hidden="true" />
@@ -56,7 +56,7 @@ export function Faq() {
                       </span>
                       <span
                         className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg transition-colors ${isOpen
-                            ? "bg-brand text-white"
+                            ? "bg-brand text-neutral-950"
                             : "border border-line bg-surface-elevated text-ink"
                           }`}
                         aria-hidden="true"
@@ -86,7 +86,7 @@ export function Faq() {
 
 export function BigCta() {
   return (
-    <section className="bg-surface pb-20 lg:pb-28" aria-label="Call to action">
+    <section className="cv-auto bg-surface pb-20 lg:pb-28" aria-label="Call to action">
       <Container>
         <Reveal>
           <div className="dark-bento relative overflow-clip rounded-3xl px-6 py-16 text-center text-white sm:px-12 lg:py-22">
@@ -101,7 +101,7 @@ export function BigCta() {
             <div className="mt-8 flex flex-col justify-center gap-3.5 sm:flex-row">
               <Link
                 href="/contact"
-                className="btn-press inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-8 py-4 text-sm font-medium text-white hover:bg-brand-dark"
+                className="btn-press inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-8 py-4 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
               >
                 Start a Project
                 <ArrowRight size={16} aria-hidden="true" />

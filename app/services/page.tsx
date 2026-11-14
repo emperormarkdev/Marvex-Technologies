@@ -63,7 +63,7 @@ export default function ServicesPage() {
                       </p>
                       <Link
                         href={`/contact?service=${s.slug}`}
-                        className="btn-press mt-7 inline-flex items-center gap-2 rounded-xl bg-ink px-6 py-3 text-sm font-medium text-surface hover:bg-brand hover:text-white"
+                        className="btn-press mt-7 inline-flex items-center gap-2 rounded-xl bg-ink px-6 py-3 text-sm font-medium text-surface hover:bg-brand hover:text-neutral-950"
                       >
                         Request this service
                         <ArrowRight size={15} aria-hidden="true" />

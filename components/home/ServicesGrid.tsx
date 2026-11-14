@@ -29,7 +29,7 @@ const icons: Record<string, typeof Globe> = {
 
 export default function ServicesGrid() {
   return (
-    <section className="bg-mist py-20 lg:py-28" aria-label="Services">
+    <section className="cv-auto bg-mist py-20 lg:py-28" aria-label="Services">
       <Container>
         <Reveal>
           <SectionHeading
@@ -49,7 +49,7 @@ export default function ServicesGrid() {
                 className="group row-span-4 grid grid-rows-[auto_auto_1fr_auto] rounded-3xl border border-line bg-surface-card p-7 transition-all hover:-translate-y-1 hover:border-brand hover:shadow-[0_20px_40px_-15px_rgba(0,196,122,0.16)] sm:p-8 [grid-template-rows:subgrid]"
               >
                 <div className="flex items-center justify-between gap-2">
-                  <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-pale text-brand-dark transition-colors group-hover:bg-brand group-hover:text-white">
+                  <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-pale text-brand-dark transition-colors group-hover:bg-brand group-hover:text-neutral-950">
                     <Icon size={22} aria-hidden="true" />
                   </span>
                 </div>

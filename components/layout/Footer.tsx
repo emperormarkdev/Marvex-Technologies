@@ -39,11 +39,11 @@ export default function Footer() {
 
           <nav aria-label="Company">
             <h3 className="text-xs font-semibold text-neutral-400">Company</h3>
-            <ul className="mt-4 space-y-2.5 text-sm">
+            <ul className="mt-4 space-y-1.5 text-sm">
               <li>
                 <Link
                   href="/"
-                  className="text-neutral-200 transition-colors hover:text-white"
+                  className="inline-flex min-h-7 items-center py-1 text-neutral-200 transition-colors hover:text-white"
                 >
                   Home
                 </Link>
@@ -52,7 +52,7 @@ export default function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-neutral-200 transition-colors hover:text-white"
+                    className="inline-flex min-h-7 items-center py-1 text-neutral-200 transition-colors hover:text-white"
                   >
                     {l.label}
                   </Link>
@@ -65,12 +65,12 @@ export default function Footer() {
             <h3 className="text-xs font-semibold text-neutral-400">
               What We Build
             </h3>
-            <ul className="mt-4 space-y-2.5 text-sm">
+            <ul className="mt-4 space-y-1.5 text-sm">
               {services.map((s) => (
                 <li key={s.slug}>
                   <Link
                     href={`/services#${s.slug}`}
-                    className="text-neutral-200 transition-colors hover:text-white"
+                    className="inline-flex min-h-7 items-center py-1 text-neutral-200 transition-colors hover:text-white"
                   >
                     {s.title}
                   </Link>
@@ -83,8 +83,8 @@ export default function Footer() {
             <h3 className="text-xs font-semibold text-neutral-400">
               Get in Touch
             </h3>
-            <ul className="mt-4 space-y-3 text-sm text-neutral-200">
-              <li className="flex items-start gap-3">
+            <ul className="mt-4 space-y-2 text-sm text-neutral-200">
+              <li className="flex items-start gap-3 py-1">
                 <MapPin
                   size={17}
                   className="mt-0.5 shrink-0 text-white"
@@ -92,42 +92,42 @@ export default function Footer() {
                 />
                 <span>{siteConfig.location}</span>
               </li>
-              <li className="flex items-start gap-3">
+              <li className="flex items-center gap-3">
                 <Mail
                   size={17}
-                  className="mt-0.5 shrink-0 text-white"
+                  className="shrink-0 text-white"
                   aria-hidden="true"
                 />
                 <a
                   href={`mailto:${siteConfig.emailRecipient}`}
                   aria-label={`Email ${siteConfig.email}`}
-                  className="break-all transition-colors hover:text-brand"
+                  className="inline-flex min-h-7 items-center py-1 break-all transition-colors hover:text-brand"
                 >
                   {siteConfig.email}
                 </a>
               </li>
-              <li className="flex items-start gap-3">
+              <li className="flex items-center gap-3">
                 <Phone
                   size={17}
-                  className="mt-0.5 shrink-0 text-white"
+                  className="shrink-0 text-white"
                   aria-hidden="true"
                 />
                 <a
                   href={`tel:${siteConfig.phoneHref}`}
                   aria-label={`Call ${siteConfig.phoneDisplay}`}
-                  className="transition-colors hover:text-brand"
+                  className="inline-flex min-h-7 items-center py-1 transition-colors hover:text-brand"
                 >
                   {siteConfig.phoneDisplay}
                 </a>
               </li>
-              <li className="flex items-start gap-3">
+              <li className="flex items-center gap-3">
                 <WhatsAppIcon />
                 <a
                   href={`https://wa.me/${siteConfig.whatsapp}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`WhatsApp ${siteConfig.phoneDisplay}`}
-                  className="transition-colors hover:text-brand"
+                  className="inline-flex min-h-7 items-center py-1 transition-colors hover:text-brand"
                 >
                   {siteConfig.phoneDisplay}
                 </a>
@@ -135,7 +135,7 @@ export default function Footer() {
             </ul>
             <Link
               href="/contact"
-              className="btn-press mt-6 inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-2.5 text-sm font-medium text-white hover:bg-brand-dark"
+              className="btn-press mt-6 inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
             >
               Start a Project
               <ArrowRight size={15} aria-hidden="true" />

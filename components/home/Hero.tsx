@@ -42,7 +42,7 @@ export default function Hero() {
           <div className="mt-8 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
             <Link
               href="/contact"
-              className="btn-press inline-flex w-full items-center justify-center gap-2 rounded-xl bg-ink px-8 py-4 text-sm font-medium text-surface shadow-sm hover:bg-brand hover:text-white sm:w-auto"
+              className="btn-press inline-flex w-full items-center justify-center gap-2 rounded-xl bg-ink px-8 py-4 text-sm font-medium text-surface shadow-sm hover:bg-brand hover:text-neutral-950 sm:w-auto"
             >
               Start a Project
               <ArrowRight size={16} aria-hidden="true" />
@@ -64,7 +64,7 @@ export default function Hero() {
               className="group flex flex-col justify-between rounded-3xl border border-line bg-surface-card p-7 transition-all hover:-translate-y-1 hover:border-brand hover:shadow-[0_20px_40px_-15px_rgba(0,196,122,0.18)]"
             >
               <div>
-                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-pale text-brand-dark transition-colors group-hover:bg-brand group-hover:text-white">
+                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-pale text-brand-dark transition-colors group-hover:bg-brand group-hover:text-neutral-950">
                   <p.icon size={22} aria-hidden="true" />
                 </span>
                 <h2 className="mt-6 font-display text-xl font-semibold tracking-[-0.035em] text-ink">

@@ -11,7 +11,7 @@ export function ProcessStrip() {
   const current = processSteps[activeIdx] ?? processSteps[0];
 
   return (
-    <section className="bg-surface py-20 lg:py-28" aria-label="How we work">
+    <section className="cv-auto bg-surface py-20 lg:py-28" aria-label="How we work">
       <Container>
         <Reveal>
           <SectionHeading
@@ -45,7 +45,7 @@ export function ProcessStrip() {
                 >
                   <span
                     className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl font-display text-sm font-semibold transition-colors ${isSelected
-                        ? "bg-brand text-white"
+                        ? "bg-brand text-neutral-950"
                         : "bg-brand-pale text-brand-dark"
                       }`}
                   >
@@ -124,24 +124,28 @@ export function ProcessStrip() {
             </div>
 
             <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
                 {processSteps.map((step, idx) => (
                   <button
                     key={step.no}
                     type="button"
                     onClick={() => setActiveIdx(idx)}
                     aria-label={`View step ${step.no}`}
-                    className={`h-2 rounded-full transition-all ${idx === activeIdx
-                        ? "w-7 bg-brand"
-                        : "w-2 bg-line hover:bg-muted"
-                      }`}
-                  />
+                    className="group flex h-8 min-w-8 items-center justify-center rounded-full px-1"
+                  >
+                    <span
+                      className={`h-2.5 rounded-full transition-all ${idx === activeIdx
+                          ? "w-7 bg-brand"
+                          : "w-2.5 bg-line group-hover:bg-muted"
+                        }`}
+                    />
+                  </button>
                 ))}
               </div>
 
               <Link
                 href="/process"
-                className="inline-flex items-center gap-2 text-sm font-medium text-brand-dark hover:underline"
+                className="inline-flex min-h-8 items-center gap-2 text-sm font-medium text-brand-dark hover:underline"
               >
                 Read full process guide
                 <ArrowRight size={15} aria-hidden="true" />
@@ -157,7 +161,7 @@ export function ProcessStrip() {
 export function EngagementModels() {
   return (
     <section
-      className="border-t border-line bg-mist py-20 lg:py-28"
+      className="cv-auto border-t border-line bg-mist py-20 lg:py-28"
       aria-label="Ways to work with us"
     >
       <Container>
@@ -195,9 +199,9 @@ export function EngagementModels() {
                   <div className="mt-8">
                     <Link
                       href="/contact"
-                      className={`btn-press inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium ${featured
-                          ? "bg-brand text-white hover:bg-brand-dark"
-                          : "border border-line bg-surface-elevated text-ink hover:border-brand hover:bg-brand hover:text-white"
+                      className={`btn-press inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold ${featured
+                          ? "bg-brand text-neutral-950 hover:bg-[#00db89]"
+                          : "border border-line bg-surface-elevated text-ink hover:border-brand hover:bg-brand hover:text-neutral-950"
                         }`}
                     >
                       Get started

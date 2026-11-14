@@ -118,10 +118,11 @@ function ContactInner() {
                       </label>
                       <input
                         id="name"
+                        autoComplete="name"
                         required
                         value={form.name}
                         onChange={set("name")}
-                        placeholder="Adaeze Okafor"
+                        placeholder="Full Name"
                         className={inputCls}
                       />
                     </div>
@@ -135,6 +136,7 @@ function ContactInner() {
                       </label>
                       <input
                         id="company"
+                        autoComplete="organization"
                         value={form.company}
                         onChange={set("company")}
                         placeholder="Shopmax Ltd"
@@ -222,7 +224,7 @@ function ContactInner() {
                     <div className="sm:col-span-2 pt-2">
                       <button
                         type="submit"
-                        className="btn-press inline-flex w-full items-center justify-center gap-2 rounded-xl bg-ink px-8 py-4 text-sm font-medium text-surface hover:bg-brand hover:text-white sm:w-auto"
+                        className="btn-press inline-flex w-full items-center justify-center gap-2 rounded-xl bg-ink px-8 py-4 text-sm font-medium text-surface hover:bg-brand hover:text-neutral-950 sm:w-auto"
                       >
                         Send Message
                         <ArrowRight size={16} aria-hidden="true" />
@@ -239,35 +241,35 @@ function ContactInner() {
                   <p className="text-xs font-semibold text-brand-dark">
                     Reach Us Directly
                   </p>
-                  <ul className="mt-5 space-y-4 text-sm text-ink">
-                    <li className="flex items-start gap-3">
+                  <ul className="mt-5 space-y-3 text-sm text-ink">
+                    <li className="flex items-center gap-3">
                       <Mail
                         size={18}
-                        className="mt-0.5 shrink-0 text-brand-dark"
+                        className="shrink-0 text-brand-dark"
                         aria-hidden="true"
                       />
                       <a
                         href={`mailto:${siteConfig.emailRecipient}`}
                         aria-label={`Email ${siteConfig.email}`}
-                        className="break-all hover:text-brand-dark"
+                        className="inline-flex min-h-7 items-center py-1 break-all hover:text-brand-dark"
                       >
                         {siteConfig.email}
                       </a>
                     </li>
-                    <li className="flex items-start gap-3">
+                    <li className="flex items-center gap-3">
                       <Phone
                         size={18}
-                        className="mt-0.5 shrink-0 text-brand-dark"
+                        className="shrink-0 text-brand-dark"
                         aria-hidden="true"
                       />
                       <a
                         href={`tel:${siteConfig.phoneHref}`}
-                        className="hover:text-brand-dark"
+                        className="inline-flex min-h-7 items-center py-1 hover:text-brand-dark"
                       >
                         {siteConfig.phoneDisplay}
                       </a>
                     </li>
-                    <li className="flex items-start gap-3">
+                    <li className="flex items-start gap-3 py-1">
                       <MapPin
                         size={18}
                         className="mt-0.5 shrink-0 text-brand-dark"

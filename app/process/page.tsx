@@ -53,7 +53,7 @@ export default function ProcessPage() {
                 <li className="rounded-3xl border border-line bg-surface-card p-7 sm:p-9">
                   <div className="grid items-center gap-6 lg:grid-cols-[0.9fr_1.1fr_1fr] lg:gap-10">
                     <div className="flex items-center gap-4">
-                      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brand text-base font-semibold text-white">
+                      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brand text-base font-semibold text-neutral-950">
                         {s.no}
                       </span>
                       <div>
@@ -103,7 +103,7 @@ export default function ProcessPage() {
               </div>
               <Link
                 href="/contact"
-                className="btn-press inline-flex shrink-0 items-center gap-2 rounded-xl bg-brand px-7 py-3.5 text-sm font-medium text-white hover:bg-brand-dark"
+                className="btn-press inline-flex shrink-0 items-center gap-2 rounded-xl bg-brand px-7 py-3.5 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
               >
                 Start a Project
                 <ArrowRight size={15} aria-hidden="true" />
