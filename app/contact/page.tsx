@@ -152,9 +152,19 @@ function ContactInner() {
                       <input
                         id="phone"
                         type="tel"
+                        inputMode="numeric"
+                        autoComplete="tel"
                         required
+                        pattern="^\+?[0-9\s]{7,20}$"
+                        title="Please enter a valid phone number using digits only"
                         value={form.phone}
-                        onChange={set("phone")}
+                        onChange={(e) => {
+                          const cleaned = e.target.value.replace(
+                            /[^0-9+\s]/g,
+                            ""
+                          );
+                          setForm((f) => ({ ...f, phone: cleaned }));
+                        }}
                         placeholder="+234 904 044 7548"
                         className={inputCls}
                       />

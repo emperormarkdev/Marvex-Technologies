@@ -221,10 +221,6 @@ body {
   animation: marquee 28s linear infinite;
 }
 
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-
 .marquee-mask {
   mask-image: linear-gradient(
     to right,

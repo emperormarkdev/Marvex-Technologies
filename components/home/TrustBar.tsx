@@ -21,7 +21,7 @@ export default function TrustBar() {
                 alt={c.name}
                 width={140}
                 height={40}
-                className="h-8 w-auto shrink-0 object-contain transition-transform duration-300 hover:scale-105 sm:h-9"
+                className="pointer-events-none h-8 w-auto shrink-0 select-none object-contain sm:h-9"
                 aria-hidden={i >= clients.length}
               />
             ))}
