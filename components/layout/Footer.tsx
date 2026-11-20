@@ -32,8 +32,8 @@ export default function Footer() {
           <div>
             <Logo dark />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-neutral-400">
-              We design and build modern websites, mobile apps, online stores,
-              and custom software that help your business run and grow.
+              Engineering digital platforms, mobile applications, commerce
+              infrastructure, and enterprise software built for scale.
             </p>
           </div>
 
@@ -63,7 +63,7 @@ export default function Footer() {
 
           <nav aria-label="Services">
             <h3 className="text-xs font-semibold text-neutral-400">
-              What We Build
+              Capabilities
             </h3>
             <ul className="mt-4 space-y-1.5 text-sm">
               {services.map((s) => (

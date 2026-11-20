@@ -60,17 +60,19 @@ function ContactInner() {
   return (
     <>
       <RevealObserver />
-      <section className="hero-glow border-b border-line py-14 lg:py-22">
-        <Container className="text-center">
+      <section className="hero-glow border-b border-line py-16 lg:py-24">
+        <Container>
           <Reveal>
-            <Eyebrow>Contact Us</Eyebrow>
-            <h1 className="mx-auto mt-3 max-w-3xl font-display text-[clamp(2.1rem,1.5rem+2.8vw,3.5rem)] font-semibold leading-[1.08] tracking-[-0.045em] text-ink">
-              Let&apos;s talk about your project.
-            </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-              Send us a message below or reach out directly by phone or email.
-              We respond within one business day.
-            </p>
+            <div className="max-w-3xl">
+              <Eyebrow>Contact</Eyebrow>
+              <h1 className="mt-3 font-display text-[clamp(2.2rem,1.5rem+2.8vw,3.6rem)] font-semibold leading-[1.06] tracking-[-0.045em] text-ink">
+                Start a technical consultation.
+              </h1>
+              <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
+                Outline your objectives below or reach our team directly. We
+                respond within one business day with next steps.
+              </p>
+            </div>
           </Reveal>
         </Container>
       </section>
@@ -139,7 +141,7 @@ function ContactInner() {
                         autoComplete="organization"
                         value={form.company}
                         onChange={set("company")}
-                        placeholder="Shopmax Ltd"
+                        placeholder="Company/Brand Name"
                         className={inputCls}
                       />
                     </div>
@@ -158,7 +160,7 @@ function ContactInner() {
                         autoComplete="tel"
                         required
                         pattern="^\+?[0-9\s]{7,20}$"
-                        title="Please enter a valid phone number using digits only"
+                        title="Please enter a valid phone number"
                         value={form.phone}
                         onChange={(e) => {
                           const cleaned = e.target.value.replace(
@@ -167,7 +169,7 @@ function ContactInner() {
                           );
                           setForm((f) => ({ ...f, phone: cleaned }));
                         }}
-                        placeholder="+234 904 044 7548"
+                        placeholder="+234 904 000 0000"
                         className={inputCls}
                       />
                     </div>
@@ -280,22 +282,28 @@ function ContactInner() {
                   </ul>
                 </div>
 
-                <div className="rounded-3xl border border-line bg-surface-card p-7 sm:p-8">
+                <div className="rounded-2xl border border-line bg-surface-card p-7 sm:p-8">
                   <h2 className="font-display text-lg font-semibold tracking-[-0.03em] text-ink">
-                    What happens next?
+                    Next Steps
                   </h2>
                   <ol className="mt-4 space-y-3 text-sm leading-relaxed text-muted">
                     <li>
-                      <strong className="font-semibold text-ink">1.</strong> We
-                      reply within one business day.
+                      <strong className="font-mono text-xs font-semibold text-brand-dark">
+                        01.
+                      </strong>{" "}
+                      Our engineering team responds within one business day.
                     </li>
                     <li>
-                      <strong className="font-semibold text-ink">2.</strong> We
-                      have a quick chat to understand your business.
+                      <strong className="font-mono text-xs font-semibold text-brand-dark">
+                        02.
+                      </strong>{" "}
+                      We schedule a technical discovery session to review scope.
                     </li>
                     <li>
-                      <strong className="font-semibold text-ink">3.</strong> You
-                      get a clear plan, delivery date, and fixed price.
+                      <strong className="font-mono text-xs font-semibold text-brand-dark">
+                        03.
+                      </strong>{" "}
+                      You receive a clear blueprint, schedule, and fixed terms.
                     </li>
                   </ol>
                 </div>

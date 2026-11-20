@@ -69,7 +69,7 @@ export default function OpenGraphImage() {
               color: "#ffffff",
             }}
           >
-            Websites, apps, and software that help your business grow.
+            Software engineered for ambitious businesses.
           </div>
           <div
             style={{
@@ -80,8 +80,8 @@ export default function OpenGraphImage() {
               maxWidth: 820,
             }}
           >
-            Company websites, iOS & Android apps, online stores, POS systems,
-            and custom management software.
+            Digital platforms, iOS & Android apps, commerce infrastructure,
+            and enterprise operations software.
           </div>
         </div>
 

@@ -21,21 +21,21 @@ export function Faq() {
             <div>
               <SectionHeading
                 align="left"
-                eyebrow="Questions & Answers"
-                title="Common questions from business owners."
-                sub="Simple, honest answers on pricing, how long projects take, staff training, and ongoing support."
+                eyebrow="Technical & Commercial FAQ"
+                title="Answers before we begin."
+                sub="Clear details on scoping, delivery timelines, intellectual property ownership, and post-launch SLA coverage."
               />
               <Link
                 href="/contact"
                 className="btn-press mt-7 inline-flex items-center gap-2 rounded-xl bg-ink px-6 py-3.5 text-sm font-medium text-surface hover:bg-brand hover:text-neutral-950"
               >
-                Ask us a question
+                Speak with engineering
                 <ArrowRight size={15} aria-hidden="true" />
               </Link>
             </div>
           </Reveal>
 
-          <div className="divide-y divide-line rounded-3xl border border-line bg-surface-card">
+          <div className="divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface-card">
             {faqs.map((f, i) => {
               const isOpen = open === i;
               const panelId = `faq-panel-${i}`;
@@ -55,10 +55,11 @@ export function Faq() {
                         {f.q}
                       </span>
                       <span
-                        className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg transition-colors ${isOpen
+                        className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg transition-colors ${
+                          isOpen
                             ? "bg-brand text-neutral-950"
                             : "border border-line bg-surface-elevated text-ink"
-                          }`}
+                        }`}
                         aria-hidden="true"
                       >
                         {isOpen ? <Minus size={15} /> : <Plus size={15} />}
@@ -86,31 +87,34 @@ export function Faq() {
 
 export function BigCta() {
   return (
-    <section className="cv-auto bg-surface pb-20 lg:pb-28" aria-label="Call to action">
+    <section
+      className="cv-auto bg-surface pb-20 lg:pb-28"
+      aria-label="Call to action"
+    >
       <Container>
         <Reveal>
-          <div className="dark-bento relative overflow-clip rounded-3xl px-6 py-16 text-center text-white sm:px-12 lg:py-22">
-            <Eyebrow dark>Let&apos;s Talk About Your Business</Eyebrow>
+          <div className="dark-bento relative overflow-clip rounded-2xl px-6 py-16 text-center text-white sm:px-12 lg:py-22">
+            <Eyebrow dark>Start an Engagement</Eyebrow>
             <h2 className="mx-auto mt-3 max-w-2xl font-display text-[clamp(2rem,1.4rem+2.4vw,3.25rem)] font-semibold leading-[1.08] tracking-[-0.04em] text-white">
-              Ready to build your website, app, or business software?
+              Ready to architect your next platform or system?
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-neutral-300 sm:text-lg">
-              Tell us what you want to build or improve. We will have a quick
-              chat and send you a clear plan and fixed price with zero pressure.
+              Share your objectives with our engineering team. We will scope the
+              architecture, timeline, and fixed commercial terms clearly.
             </p>
             <div className="mt-8 flex flex-col justify-center gap-3.5 sm:flex-row">
               <Link
                 href="/contact"
                 className="btn-press inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-8 py-4 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
               >
-                Start a Project
+                Start a Consultation
                 <ArrowRight size={16} aria-hidden="true" />
               </Link>
               <Link
                 href="/process"
                 className="btn-press inline-flex items-center justify-center gap-2 rounded-xl border border-neutral-700 bg-neutral-900 px-8 py-4 text-sm font-medium text-white hover:border-white hover:bg-neutral-800"
               >
-                See How We Work
+                Review Methodology
               </Link>
             </div>
           </div>

@@ -1,90 +1,110 @@
 import Link from "next/link";
-import { ArrowRight, Globe, LayoutGrid, Smartphone } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/primitives";
 
 const pillars = [
   {
-    icon: Globe,
-    title: "Websites & Online Stores",
-    desc: "Fast, modern company websites and online shops that make your business look great and turn visitors into customers.",
+    index: "01",
+    tag: "PLATFORMS & COMMERCE",
+    title: "Web Flagships & Digital Commerce",
+    desc: "High-speed corporate platforms, online storefronts, and marketplaces engineered for conversion and reliability.",
     href: "/services#websites",
   },
   {
-    icon: Smartphone,
-    title: "Mobile & Web Apps",
-    desc: "Custom iPhone, Android, and web apps built from scratch for bookings, deliveries, customer portals, or your next big idea.",
+    index: "02",
+    tag: "PRODUCT ENGINEERING",
+    title: "Mobile & Full-Stack Web Applications",
+    desc: "Native-quality iOS, Android, and cloud web applications built for scale, security, and seamless user experience.",
     href: "/services#mobile-apps",
   },
   {
-    icon: LayoutGrid,
-    title: "Business & Retail Software",
-    desc: "Custom management software, POS systems, and smart automation to keep your sales, stock, and staff in one simple place.",
+    index: "03",
+    tag: "OPERATIONS & AUTOMATION",
+    title: "Enterprise Systems & Retail Infrastructure",
+    desc: "Custom ERP platforms, multi-branch retail systems, and automated integrations that unify your entire operation.",
     href: "/services#management-systems",
   },
 ];
 
 export default function Hero() {
   return (
-    <section className="hero-glow overflow-clip border-b border-line pt-10 pb-16 sm:pt-16 sm:pb-24">
+    <section className="hero-glow overflow-clip border-b border-line pt-12 pb-16 sm:pt-20 sm:pb-24">
       <Container>
-        <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
-          <h1 className="font-display text-[clamp(2.35rem,1.6rem+3.4vw,4.25rem)] font-semibold leading-[1.06] tracking-[-0.045em] text-ink">
-            We build websites, apps, and software that{" "}
-            <span className="text-brand-dark">help your business grow.</span>
-          </h1>
+        <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
+          <div className="flex flex-col items-start text-left">
+            <p className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-card px-3.5 py-1.5 font-mono text-[11px] font-medium tracking-[0.08em] text-brand-dark uppercase">
+              <span
+                className="h-1.5 w-1.5 rounded-full bg-brand"
+                aria-hidden="true"
+              />
+              Software Engineering &amp; Digital Systems
+            </p>
 
-          <p className="mt-5 max-w-2xl text-base leading-relaxed tracking-[-0.015em] text-muted sm:text-xl">
-            From company websites and mobile apps to online stores and custom
-            software for your daily operations, we design it, build it, train
-            your team, and stay to support you.
-          </p>
+            <h1 className="mt-6 font-display text-[clamp(2.4rem,1.65rem+3.2vw,4.35rem)] font-semibold leading-[1.04] tracking-[-0.045em] text-ink">
+              Software engineered for{" "}
+              <span className="text-brand-dark">ambitious businesses.</span>
+            </h1>
 
-          <div className="mt-8 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
-            <Link
-              href="/contact"
-              className="btn-press inline-flex w-full items-center justify-center gap-2 rounded-xl bg-ink px-8 py-4 text-sm font-medium text-surface shadow-sm hover:bg-brand hover:text-neutral-950 sm:w-auto"
-            >
-              Start a Project
-              <ArrowRight size={16} aria-hidden="true" />
-            </Link>
-            <Link
-              href="/services"
-              className="btn-press inline-flex w-full items-center justify-center gap-2 rounded-xl border border-line bg-surface-card px-8 py-4 text-sm font-medium text-ink hover:border-brand sm:w-auto"
-            >
-              View Our Services
-            </Link>
+            <p className="mt-6 max-w-xl text-base leading-relaxed tracking-[-0.015em] text-muted sm:text-lg">
+              We architect and build digital platforms, mobile applications,
+              commerce infrastructure, and custom enterprise software with the
+              precision and reliability modern organizations demand.
+            </p>
+
+            <div className="mt-9 flex w-full flex-col gap-3.5 sm:w-auto sm:flex-row">
+              <Link
+                href="/contact"
+                className="btn-press inline-flex items-center justify-center gap-2 rounded-xl bg-ink px-7 py-4 text-sm font-medium text-surface shadow-sm hover:bg-brand hover:text-neutral-950"
+              >
+                Start a Consultation
+                <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+              <Link
+                href="/services"
+                className="btn-press inline-flex items-center justify-center gap-2 rounded-xl border border-line bg-surface-card px-7 py-4 text-sm font-medium text-ink hover:border-brand"
+              >
+                Explore Capabilities
+              </Link>
+            </div>
           </div>
-        </div>
 
-        <div className="mt-14 grid gap-5 md:grid-cols-3 lg:mt-18">
-          {pillars.map((p) => (
-            <Link
-              key={p.title}
-              href={p.href}
-              className="group flex flex-col justify-between rounded-3xl border border-line bg-surface-card p-7 transition-all hover:-translate-y-1 hover:border-brand hover:shadow-[0_20px_40px_-15px_rgba(0,196,122,0.18)]"
-            >
-              <div>
-                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-pale text-brand-dark transition-colors group-hover:bg-brand group-hover:text-neutral-950">
-                  <p.icon size={22} aria-hidden="true" />
-                </span>
-                <h2 className="mt-6 font-display text-xl font-semibold tracking-[-0.035em] text-ink">
-                  {p.title}
-                </h2>
-                <p className="mt-2.5 text-sm leading-relaxed text-muted">
-                  {p.desc}
-                </p>
-              </div>
+          <div className="dark-bento overflow-hidden rounded-2xl text-white shadow-sm">
+            <div className="flex items-center justify-between border-b border-neutral-800 px-6 py-4">
+              <span className="font-mono text-[11px] tracking-[0.12em] text-neutral-400 uppercase">
+                Core Practice Areas
+              </span>
+              <span className="font-mono text-[11px] text-brand">
+                03 DISCIPLINES
+              </span>
+            </div>
 
-              <div className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-brand-dark">
-                Read details
-                <ArrowRight
-                  size={15}
-                  className="transition-transform group-hover:translate-x-1"
-                  aria-hidden="true"
-                />
-              </div>
-            </Link>
-          ))}
+            <div className="divide-y divide-neutral-800">
+              {pillars.map((p) => (
+                <Link
+                  key={p.title}
+                  href={p.href}
+                  className="group flex flex-col gap-2 px-6 py-6 transition-colors hover:bg-neutral-900/70"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="font-mono text-[11px] tracking-[0.08em] text-brand">
+                      {p.index} / {p.tag}
+                    </span>
+                    <ArrowUpRight
+                      size={16}
+                      className="text-neutral-500 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brand"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <h2 className="font-display text-lg font-semibold tracking-[-0.03em] text-white">
+                    {p.title}
+                  </h2>
+                  <p className="text-sm leading-relaxed text-neutral-400">
+                    {p.desc}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </Container>
     </section>
