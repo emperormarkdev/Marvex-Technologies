@@ -2,27 +2,8 @@ import Link from "next/link";
 import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 import { Logo } from "./Navbar";
 import Year from "./Year";
+import WhatsAppLogo from "@/components/ui/WhatsAppLogo";
 import { navLinks, services, siteConfig } from "@/data/content";
-
-function WhatsAppIcon() {
-  return (
-    <svg
-      width="17"
-      height="17"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="mt-0.5 shrink-0 text-white"
-      aria-hidden="true"
-    >
-      <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" />
-      <path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1" />
-    </svg>
-  );
-}
 
 export default function Footer() {
   return (
@@ -130,7 +111,7 @@ export default function Footer() {
                 </a>
               </li>
               <li className="flex items-center gap-3">
-                <WhatsAppIcon />
+                <WhatsAppLogo size={17} className="shrink-0 text-white" />
                 <a
                   href={`https://wa.me/${siteConfig.whatsapp}`}
                   target="_blank"
@@ -138,7 +119,7 @@ export default function Footer() {
                   aria-label={`WhatsApp ${siteConfig.phoneDisplay}`}
                   className="inline-flex min-h-7 items-center py-1 transition-colors hover:text-brand"
                 >
-                  {siteConfig.phoneDisplay}
+                  WhatsApp
                 </a>
               </li>
             </ul>

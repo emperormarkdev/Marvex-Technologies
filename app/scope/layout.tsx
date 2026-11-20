@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Project Scope Builder | Marvex Technologies",
     description:
-      "Build a clear technical project brief in minutes, save it as a PDF, or send it directly to our engineering team via WhatsApp or Email.",
+      "Build a clear technical project brief in minutes, save it as a PDF, or submit it directly to our engineering team.",
     url: "https://marvextechnologies.vercel.app/scope",
   },
 };

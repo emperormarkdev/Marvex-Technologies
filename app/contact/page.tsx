@@ -9,9 +9,9 @@ import {
   Calendar,
   CheckCircle2,
   Download,
+  Loader2,
   Mail,
   MapPin,
-  MessageCircle,
   Phone,
 } from "lucide-react";
 import { Container, Eyebrow, Reveal } from "@/components/ui/primitives";
@@ -74,6 +74,7 @@ function downloadCalendarInvite({
   minute,
   topic,
   name,
+  email,
   company,
   phone,
 }: {
@@ -82,6 +83,7 @@ function downloadCalendarInvite({
   minute: number;
   topic: string;
   name: string;
+  email: string;
   company: string;
   phone: string;
 }) {
@@ -103,10 +105,13 @@ function downloadCalendarInvite({
   const description = [
     `Consultation with ${siteConfig.name}`,
     `Client: ${name}${company ? ` (${company})` : ""}`,
-    `Phone: ${phone}`,
+    `Email: ${email}`,
+    phone ? `Phone: ${phone}` : "",
     `Direct line: ${siteConfig.phoneDisplay}`,
-    `Email: ${siteConfig.email}`,
-  ].join("\\n");
+    `Contact: ${siteConfig.email}`,
+  ]
+    .filter(Boolean)
+    .join("\\n");
 
   const ics = [
     "BEGIN:VCALENDAR",
@@ -155,14 +160,17 @@ function ContactInner() {
   // Inquiry state
   const [form, setForm] = useState({
     name: "",
+    email: "",
     company: "",
     phone: "",
     service: preselected,
     message: "",
+    website: "",
   });
-  const [submittedChannel, setSubmittedChannel] = useState<
-    "whatsapp" | "email" | null
-  >(null);
+  const [inquiryStatus, setInquiryStatus] = useState<
+    "idle" | "submitting" | "sent" | "error"
+  >("idle");
+  const [inquiryError, setInquiryError] = useState("");
 
   // Call scheduler state
   const upcomingDays = useMemo(() => getUpcomingBusinessDays(6), []);
@@ -173,61 +181,19 @@ function ContactInner() {
   const [callTopic, setCallTopic] = useState(callTopics[0]);
   const [callForm, setCallForm] = useState({
     name: "",
+    email: "",
     company: "",
     phone: "",
+    website: "",
   });
-  const [callBooked, setCallBooked] = useState(false);
+  const [callStatus, setCallStatus] = useState<
+    "idle" | "submitting" | "booked" | "error"
+  >("idle");
+  const [callError, setCallError] = useState("");
 
   const selectedDay =
     upcomingDays.find((d) => d.iso === selectedDayIso) ?? upcomingDays[0];
   const selectedSlot = timeSlots[selectedSlotIdx] ?? timeSlots[0];
-
-  const inquiryText = useMemo(() => {
-    const selectedService =
-      services.find((s) => s.slug === form.service)?.title ?? form.service;
-    return [
-      `New Project Inquiry`,
-      `Name: ${form.name}`,
-      form.company ? `Organization: ${form.company}` : "",
-      `Phone: ${form.phone}`,
-      selectedService ? `Capability: ${selectedService}` : "",
-      ``,
-      `Details:`,
-      form.message,
-    ]
-      .filter(Boolean)
-      .join("\n");
-  }, [form]);
-
-  const mailtoUrl = useMemo(() => {
-    const subject = `Project Inquiry from ${form.name || form.company || "Website"}`;
-    return `mailto:${siteConfig.emailRecipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(inquiryText)}`;
-  }, [form.name, form.company, inquiryText]);
-
-  const whatsappInquiryUrl = useMemo(
-    () =>
-      `https://wa.me/${siteConfig.whatsapp}?text=${encodeURIComponent(inquiryText)}`,
-    [inquiryText]
-  );
-
-  const callSummaryText = useMemo(() => {
-    const dateStr = selectedDay
-      ? `${selectedDay.dayLabel}, ${selectedDay.dateLabel}`
-      : "";
-    return [
-      `Discovery Call Booking`,
-      `Date: ${dateStr} at ${selectedSlot.label} (WAT)`,
-      `Topic: ${callTopic}`,
-      `Name: ${callForm.name}`,
-      callForm.company ? `Organization: ${callForm.company}` : "",
-      `Phone: ${callForm.phone}`,
-    ]
-      .filter(Boolean)
-      .join("\n");
-  }, [selectedDay, selectedSlot, callTopic, callForm]);
-
-  const whatsappBookingUrl = `https://wa.me/${siteConfig.whatsapp}?text=${encodeURIComponent(callSummaryText)}`;
-  const emailBookingUrl = `mailto:${siteConfig.emailRecipient}?subject=${encodeURIComponent(`Discovery Call: ${callTopic}`)}&body=${encodeURIComponent(callSummaryText)}`;
 
   const set =
     (k: keyof typeof form) =>
@@ -246,10 +212,100 @@ function ContactInner() {
       minute: selectedSlot.minute,
       topic: callTopic,
       name: callForm.name,
+      email: callForm.email,
       company: callForm.company,
       phone: callForm.phone,
     });
   };
+
+  async function handleInquirySubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setInquiryStatus("submitting");
+    setInquiryError("");
+
+    const selectedService =
+      services.find((s) => s.slug === form.service)?.title ?? form.service;
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "inquiry",
+          name: form.name,
+          email: form.email,
+          company: form.company,
+          phone: form.phone,
+          service: selectedService,
+          message: form.message,
+          website: form.website,
+        }),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+      };
+      if (!res.ok || !data.ok) {
+        setInquiryError(
+          data.error || "Unable to send your inquiry. Please try again."
+        );
+        setInquiryStatus("error");
+        return;
+      }
+      setInquiryStatus("sent");
+    } catch {
+      setInquiryError(
+        "Network error while sending your inquiry. Please try again."
+      );
+      setInquiryStatus("error");
+    }
+  }
+
+  async function handleCallSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setCallStatus("submitting");
+    setCallError("");
+
+    const dateStr = selectedDay
+      ? `${selectedDay.dayLabel}, ${selectedDay.dateLabel}`
+      : "";
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "call",
+          date: dateStr,
+          time: selectedSlot.label,
+          topic: callTopic,
+          name: callForm.name,
+          email: callForm.email,
+          company: callForm.company,
+          phone: callForm.phone,
+          website: callForm.website,
+        }),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+      };
+      if (!res.ok || !data.ok) {
+        setCallError(
+          data.error || "Unable to reserve your call slot. Please try again."
+        );
+        setCallStatus("error");
+        return;
+      }
+      setCallStatus("booked");
+      triggerInviteDownload();
+    } catch {
+      setCallError(
+        "Network error while booking your call. Please try again."
+      );
+      setCallStatus("error");
+    }
+  }
 
   return (
     <>
@@ -263,7 +319,8 @@ function ContactInner() {
                 Start a project conversation.
               </h1>
               <p className="mt-4 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-                Send a message on WhatsApp or email, or book a 30-minute call.
+                Send us your project details or reserve a 30-minute technical
+                discovery call. We respond within one business day.
               </p>
             </div>
           </Reveal>
@@ -327,51 +384,63 @@ function ContactInner() {
                       exit={prefersReduced ? undefined : { opacity: 0, y: -8 }}
                       transition={{ duration: 0.2 }}
                     >
-                      {submittedChannel ? (
-                        <div className="flex min-h-80 flex-col items-center justify-center text-center">
+                      {inquiryStatus === "sent" ? (
+                        <div
+                          className="flex min-h-80 flex-col items-center justify-center text-center"
+                          role="status"
+                          aria-live="polite"
+                        >
                           <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand-pale text-brand-dark">
                             <CheckCircle2 size={28} aria-hidden="true" />
                           </span>
                           <h2 className="mt-5 font-display text-2xl font-semibold tracking-[-0.03em] text-ink">
-                            Inquiry ready to send
+                            Inquiry received
                           </h2>
                           <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">
-                            {submittedChannel === "whatsapp"
-                              ? "WhatsApp has been opened with your formatted project details. Send the message and our team will reply promptly."
-                              : `Your email app has been opened with your inquiry. You can also message us directly on ${siteConfig.phoneDisplay}.`}
+                            Thank you,{" "}
+                            <strong className="text-ink">{form.name}</strong>.
+                            Our engineering team has received your project
+                            details and will reply to{" "}
+                            <strong className="text-ink">{form.email}</strong>{" "}
+                            within one business day.
                           </p>
                           <div className="mt-6 flex flex-wrap justify-center gap-3">
-                            <a
-                              href={whatsappInquiryUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="btn-press inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
-                            >
-                              <MessageCircle size={15} aria-hidden="true" />
-                              Open WhatsApp
-                            </a>
                             <button
                               type="button"
-                              onClick={() => setSubmittedChannel(null)}
+                              onClick={() => {
+                                setForm({
+                                  name: "",
+                                  email: "",
+                                  company: "",
+                                  phone: "",
+                                  service: preselected,
+                                  message: "",
+                                  website: "",
+                                });
+                                setInquiryStatus("idle");
+                              }}
                               className="btn-press rounded-xl border border-line bg-surface-elevated px-5 py-2.5 text-sm font-medium text-ink hover:border-brand"
                             >
-                              Edit details
+                              Send another inquiry
                             </button>
                           </div>
                         </div>
                       ) : (
                         <form
-                          onSubmit={(e) => {
-                            e.preventDefault();
-                            window.open(
-                              whatsappInquiryUrl,
-                              "_blank",
-                              "noopener,noreferrer"
-                            );
-                            setSubmittedChannel("whatsapp");
-                          }}
+                          onSubmit={handleInquirySubmit}
                           className="grid gap-5 sm:grid-cols-2"
                         >
+                          <input
+                            type="text"
+                            name="website"
+                            tabIndex={-1}
+                            autoComplete="off"
+                            value={form.website}
+                            onChange={set("website")}
+                            className="hidden"
+                            aria-hidden="true"
+                          />
+
                           <div>
                             <label
                               htmlFor="name"
@@ -386,6 +455,25 @@ function ContactInner() {
                               value={form.name}
                               onChange={set("name")}
                               placeholder="Adaeze Okafor"
+                              className={inputCls}
+                            />
+                          </div>
+
+                          <div>
+                            <label
+                              htmlFor="email"
+                              className="mb-2 block text-xs font-medium text-ink"
+                            >
+                              Work Email *
+                            </label>
+                            <input
+                              id="email"
+                              type="email"
+                              autoComplete="email"
+                              required
+                              value={form.email}
+                              onChange={set("email")}
+                              placeholder="adaeze@shopmax.com"
                               className={inputCls}
                             />
                           </div>
@@ -412,15 +500,14 @@ function ContactInner() {
                               htmlFor="phone"
                               className="mb-2 block text-xs font-medium text-ink"
                             >
-                              Phone Number *
+                              Phone Number
                             </label>
                             <input
                               id="phone"
                               type="tel"
                               inputMode="numeric"
                               autoComplete="tel"
-                              required
-                              pattern="^\+?[0-9\s]{7,20}$"
+                              pattern="^(\+?[0-9\s]{7,20})?$"
                               title="Please enter a valid phone number using digits only"
                               value={form.phone}
                               onChange={(e) => {
@@ -435,7 +522,7 @@ function ContactInner() {
                             />
                           </div>
 
-                          <div>
+                          <div className="sm:col-span-2">
                             <label
                               htmlFor="service"
                               className="mb-2 block text-xs font-medium text-ink"
@@ -484,27 +571,37 @@ function ContactInner() {
                             />
                           </div>
 
-                          <div className="flex flex-col gap-3 pt-2 sm:col-span-2 sm:flex-row">
+                          {inquiryError && (
+                            <p
+                              role="alert"
+                              className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-xs text-red-600 dark:text-red-400 sm:col-span-2"
+                            >
+                              {inquiryError}
+                            </p>
+                          )}
+
+                          <div className="pt-2 sm:col-span-2">
                             <button
                               type="submit"
-                              className="btn-press inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-7 py-3.5 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
+                              disabled={inquiryStatus === "submitting"}
+                              aria-busy={inquiryStatus === "submitting"}
+                              className="btn-press inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-7 py-3.5 text-sm font-semibold text-neutral-950 hover:bg-[#00db89] disabled:cursor-not-allowed disabled:opacity-70"
                             >
-                              <MessageCircle size={16} aria-hidden="true" />
-                              Send via WhatsApp
-                              <ArrowRight size={15} aria-hidden="true" />
-                            </button>
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                const formEl = e.currentTarget.form;
-                                if (formEl && !formEl.reportValidity()) return;
-                                window.location.href = mailtoUrl;
-                                setSubmittedChannel("email");
-                              }}
-                              className="btn-press inline-flex items-center justify-center gap-2 rounded-xl border border-line bg-surface-elevated px-6 py-3.5 text-sm font-medium text-ink hover:border-brand"
-                            >
-                              <Mail size={15} aria-hidden="true" />
-                              Send via Email
+                              {inquiryStatus === "submitting" ? (
+                                <>
+                                  <Loader2
+                                    size={16}
+                                    className="animate-spin"
+                                    aria-hidden="true"
+                                  />
+                                  Sending inquiry...
+                                </>
+                              ) : (
+                                <>
+                                  Submit inquiry
+                                  <ArrowRight size={15} aria-hidden="true" />
+                                </>
+                              )}
                             </button>
                           </div>
                         </form>
@@ -518,59 +615,68 @@ function ContactInner() {
                       exit={prefersReduced ? undefined : { opacity: 0, y: -8 }}
                       transition={{ duration: 0.2 }}
                     >
-                      {callBooked ? (
-                        <div className="flex min-h-80 flex-col items-center justify-center text-center">
+                      {callStatus === "booked" ? (
+                        <div
+                          className="flex min-h-80 flex-col items-center justify-center text-center"
+                          role="status"
+                          aria-live="polite"
+                        >
                           <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand-pale text-brand-dark">
                             <Calendar size={26} aria-hidden="true" />
                           </span>
                           <h2 className="mt-5 font-display text-2xl font-semibold tracking-[-0.03em] text-ink">
-                            Calendar invite downloaded
+                            Discovery call requested
                           </h2>
                           <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">
-                            Your <strong>.ics</strong> calendar invite for{" "}
+                            Your request for{" "}
                             <strong className="text-ink">
                               {selectedDay?.dayLabel}, {selectedDay?.dateLabel}{" "}
                               at {selectedSlot.label} (WAT)
                             </strong>{" "}
-                            has been saved. Confirm your slot on WhatsApp or
-                            email so our engineer locks it in.
+                            has been sent to our team. We&apos;ll send a meeting
+                            confirmation to{" "}
+                            <strong className="text-ink">
+                              {callForm.email}
+                            </strong>{" "}
+                            and your <strong>.ics</strong> calendar invite has
+                            been downloaded.
                           </p>
                           <div className="mt-6 flex flex-wrap justify-center gap-3">
-                            <a
-                              href={whatsappBookingUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="btn-press inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
-                            >
-                              <MessageCircle size={15} aria-hidden="true" />
-                              Confirm on WhatsApp
-                            </a>
-                            <a
-                              href={emailBookingUrl}
-                              className="btn-press inline-flex items-center gap-2 rounded-xl border border-line bg-surface-elevated px-5 py-3 text-sm font-medium text-ink hover:border-brand"
-                            >
-                              <Mail size={15} aria-hidden="true" />
-                              Confirm via Email
-                            </a>
                             <button
                               type="button"
                               onClick={triggerInviteDownload}
-                              className="btn-press inline-flex items-center gap-2 rounded-xl border border-line px-4 py-3 text-sm font-medium text-muted hover:border-brand hover:text-ink"
+                              className="btn-press inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
                             >
                               <Download size={15} aria-hidden="true" />
                               Download .ics again
                             </button>
+                            <button
+                              type="button"
+                              onClick={() => setCallStatus("idle")}
+                              className="btn-press rounded-xl border border-line bg-surface-elevated px-5 py-3 text-sm font-medium text-ink hover:border-brand"
+                            >
+                              Book another time
+                            </button>
                           </div>
                         </div>
                       ) : (
-                        <form
-                          onSubmit={(e) => {
-                            e.preventDefault();
-                            triggerInviteDownload();
-                            setCallBooked(true);
-                          }}
-                          className="space-y-6"
-                        >
+                        <form onSubmit={handleCallSubmit} className="space-y-6">
+                          <input
+                            type="text"
+                            name="website"
+                            tabIndex={-1}
+                            autoComplete="off"
+                            value={callForm.website}
+                            onChange={(e) =>
+                              setCallForm((f) => ({
+                                ...f,
+                                website: e.target.value,
+                              }))
+                            }
+                            className="hidden"
+                            aria-hidden="true"
+                          />
+
                           <div>
                             <p className="mb-2.5 text-xs font-medium text-ink">
                               Day
@@ -679,6 +785,30 @@ function ContactInner() {
 
                             <div>
                               <label
+                                htmlFor="call-email"
+                                className="mb-2 block text-xs font-medium text-ink"
+                              >
+                                Work Email *
+                              </label>
+                              <input
+                                id="call-email"
+                                type="email"
+                                autoComplete="email"
+                                required
+                                value={callForm.email}
+                                onChange={(e) =>
+                                  setCallForm((f) => ({
+                                    ...f,
+                                    email: e.target.value,
+                                  }))
+                                }
+                                placeholder="adaeze@shopmax.com"
+                                className={inputCls}
+                              />
+                            </div>
+
+                            <div>
+                              <label
                                 htmlFor="call-company"
                                 className="mb-2 block text-xs font-medium text-ink"
                               >
@@ -699,12 +829,12 @@ function ContactInner() {
                               />
                             </div>
 
-                            <div className="sm:col-span-2">
+                            <div>
                               <label
                                 htmlFor="call-phone"
                                 className="mb-2 block text-xs font-medium text-ink"
                               >
-                                Phone / WhatsApp Number *
+                                Phone Number *
                               </label>
                               <input
                                 id="call-phone"
@@ -731,14 +861,38 @@ function ContactInner() {
                             </div>
                           </div>
 
+                          {callError && (
+                            <p
+                              role="alert"
+                              className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-xs text-red-600 dark:text-red-400"
+                            >
+                              {callError}
+                            </p>
+                          )}
+
                           <div className="pt-1">
                             <button
                               type="submit"
-                              className="btn-press inline-flex w-full items-center justify-center gap-2 rounded-xl bg-ink px-7 py-4 text-sm font-medium text-surface hover:bg-brand hover:text-neutral-950 sm:w-auto"
+                              disabled={callStatus === "submitting"}
+                              aria-busy={callStatus === "submitting"}
+                              className="btn-press inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-7 py-3.5 text-sm font-semibold text-neutral-950 hover:bg-[#00db89] disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
                             >
-                              <Calendar size={16} aria-hidden="true" />
-                              Reserve slot &amp; download .ics invite
-                              <ArrowRight size={15} aria-hidden="true" />
+                              {callStatus === "submitting" ? (
+                                <>
+                                  <Loader2
+                                    size={16}
+                                    className="animate-spin"
+                                    aria-hidden="true"
+                                  />
+                                  Reserving slot...
+                                </>
+                              ) : (
+                                <>
+                                  <Calendar size={16} aria-hidden="true" />
+                                  Reserve discovery call
+                                  <ArrowRight size={15} aria-hidden="true" />
+                                </>
+                              )}
                             </button>
                           </div>
                         </form>
