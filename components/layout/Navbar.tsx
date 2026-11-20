@@ -3,6 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+} from "framer-motion";
 import { ArrowRight, Moon, Sun } from "lucide-react";
 import { navLinks, siteConfig } from "@/data/content";
 
@@ -101,6 +108,14 @@ export default function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const prefersReduced = useReducedMotion();
+
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 240,
+    damping: 32,
+    restDelta: 0.001,
+  });
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -119,7 +134,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b border-line bg-surface transition-all ${
+      className={`sticky top-0 z-50 border-b border-line bg-surface/90 backdrop-blur-md transition-shadow ${
         scrolled ? "shadow-xs" : ""
       }`}
     >
@@ -138,13 +153,23 @@ export default function Navbar() {
                 key={l.href}
                 href={l.href}
                 aria-current={active ? "page" : undefined}
-                className={`inline-flex min-h-9 items-center rounded-full px-4 py-1.5 text-sm font-medium tracking-[-0.02em] transition-all ${
-                  active
-                    ? "bg-surface-elevated text-ink shadow-xs ring-1 ring-line"
-                    : "text-muted hover:text-ink"
+                className={`relative inline-flex min-h-9 items-center rounded-full px-4 py-1.5 text-sm font-medium tracking-[-0.02em] transition-colors ${
+                  active ? "text-ink" : "text-muted hover:text-ink"
                 }`}
               >
-                {l.label}
+                {active && (
+                  <motion.span
+                    layoutId={prefersReduced ? undefined : "nav-active-pill"}
+                    transition={{
+                      type: "spring",
+                      stiffness: 420,
+                      damping: 34,
+                    }}
+                    className="absolute inset-0 rounded-full bg-surface-elevated shadow-xs ring-1 ring-line"
+                    aria-hidden="true"
+                  />
+                )}
+                <span className="relative z-10">{l.label}</span>
               </Link>
             );
           })}
@@ -191,45 +216,59 @@ export default function Navbar() {
         </div>
       </div>
 
-      {open && (
-        <nav
-          id="mobile-nav"
-          className="border-t border-line bg-surface px-4 py-4 md:hidden"
-          aria-label="Mobile"
-        >
-          <ul className="flex flex-col gap-1">
-            {navLinks.map((l) => {
-              const active = pathname === l.href;
-              return (
-                <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    onClick={() => setOpen(false)}
-                    aria-current={active ? "page" : undefined}
-                    className={`block rounded-full px-4 py-2.5 text-sm font-medium ${
-                      active
-                        ? "bg-surface-elevated text-ink ring-1 ring-line"
-                        : "text-muted hover:bg-mist hover:text-ink"
-                    }`}
-                  >
-                    {l.label}
-                  </Link>
-                </li>
-              );
-            })}
-            <li className="pt-2">
-              <Link
-                href="/contact"
-                onClick={() => setOpen(false)}
-                className="btn-press flex items-center justify-center gap-2 rounded-xl bg-ink px-5 py-3 text-center text-sm font-medium text-surface"
-              >
-                Start a Project
-                <ArrowRight size={15} aria-hidden="true" />
-              </Link>
-            </li>
-          </ul>
-        </nav>
+      {!prefersReduced && (
+        <motion.div
+          style={{ scaleX }}
+          className="pointer-events-none absolute right-0 bottom-0 left-0 h-[2px] origin-left bg-brand"
+          aria-hidden="true"
+        />
       )}
+
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.nav
+            id="mobile-nav"
+            initial={prefersReduced ? false : { opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={prefersReduced ? undefined : { opacity: 0, height: 0 }}
+            transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden border-t border-line bg-surface px-4 md:hidden"
+            aria-label="Mobile"
+          >
+            <ul className="flex flex-col gap-1 py-4">
+              {navLinks.map((l) => {
+                const active = pathname === l.href;
+                return (
+                  <li key={l.href}>
+                    <Link
+                      href={l.href}
+                      onClick={() => setOpen(false)}
+                      aria-current={active ? "page" : undefined}
+                      className={`block rounded-full px-4 py-2.5 text-sm font-medium ${
+                        active
+                          ? "bg-surface-elevated text-ink ring-1 ring-line"
+                          : "text-muted hover:bg-mist hover:text-ink"
+                      }`}
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
+                );
+              })}
+              <li className="pt-2">
+                <Link
+                  href="/contact"
+                  onClick={() => setOpen(false)}
+                  className="btn-press flex items-center justify-center gap-2 rounded-xl bg-ink px-5 py-3 text-center text-sm font-medium text-surface"
+                >
+                  Start a Project
+                  <ArrowRight size={15} aria-hidden="true" />
+                </Link>
+              </li>
+            </ul>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

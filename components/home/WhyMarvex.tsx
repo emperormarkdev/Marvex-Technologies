@@ -1,4 +1,7 @@
-import { Container, Eyebrow, Reveal } from "@/components/ui/primitives";
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
+import { Container, Eyebrow } from "@/components/ui/primitives";
 
 const principles = [
   {
@@ -19,7 +22,11 @@ const principles = [
   },
 ];
 
+const expoOut: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
 export default function WhyMarvex() {
+  const prefersReduced = useReducedMotion();
+
   return (
     <section
       className="cv-auto border-y border-neutral-800 bg-black py-20 text-white lg:py-28"
@@ -27,34 +34,49 @@ export default function WhyMarvex() {
     >
       <Container>
         <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
-          <Reveal>
-            <div className="lg:sticky lg:top-28">
-              <Eyebrow dark>How we operate</Eyebrow>
-              <h2 className="mt-3 font-display text-[clamp(1.9rem,1.3rem+2.2vw,3rem)] font-semibold leading-[1.08] tracking-[-0.04em] text-white">
-                Clear scope, solid engineering, and long-term ownership.
-              </h2>
-              <p className="mt-4 max-w-md text-base leading-relaxed text-neutral-400">
-                We focus on shipping software that holds up in production,
-                backed by straightforward communication and measurable delivery.
-              </p>
-            </div>
-          </Reveal>
+          <motion.div
+            initial={prefersReduced ? false : { opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.65, ease: expoOut }}
+            className="lg:sticky lg:top-28 lg:self-start"
+          >
+            <Eyebrow dark>How we operate</Eyebrow>
+            <h2 className="mt-3 font-display text-[clamp(1.9rem,1.3rem+2.2vw,3rem)] font-semibold leading-[1.08] tracking-[-0.04em] text-white">
+              Clear scope, solid engineering, and long-term ownership.
+            </h2>
+            <p className="mt-4 max-w-md text-base leading-relaxed text-neutral-400">
+              We focus on shipping software that holds up in production, backed
+              by straightforward communication and measurable delivery.
+            </p>
+          </motion.div>
 
           <div className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-800">
             <div className="grid gap-px sm:grid-cols-2">
               {principles.map((p, i) => (
-                <Reveal key={p.title} delay={i * 60}>
-                  <div className="flex h-full flex-col justify-between bg-[#0a0a0a] p-7 sm:p-8">
-                    <div>
-                      <h3 className="font-display text-lg font-semibold tracking-[-0.03em] text-white">
-                        {p.title}
-                      </h3>
-                      <p className="mt-3 text-sm leading-relaxed text-neutral-400">
-                        {p.text}
-                      </p>
-                    </div>
+                <motion.div
+                  key={p.title}
+                  initial={
+                    prefersReduced ? false : { opacity: 0, y: 28, scale: 0.98 }
+                  }
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true, amount: 0.25 }}
+                  transition={{
+                    duration: 0.62,
+                    delay: i * 0.08,
+                    ease: expoOut,
+                  }}
+                  className="flex h-full flex-col justify-between bg-[#0a0a0a] p-7 transition-colors duration-200 hover:bg-[#111111] sm:p-8"
+                >
+                  <div>
+                    <h3 className="font-display text-lg font-semibold tracking-[-0.03em] text-white">
+                      {p.title}
+                    </h3>
+                    <p className="mt-3 text-sm leading-relaxed text-neutral-400">
+                      {p.text}
+                    </p>
                   </div>
-                </Reveal>
+                </motion.div>
               ))}
             </div>
           </div>

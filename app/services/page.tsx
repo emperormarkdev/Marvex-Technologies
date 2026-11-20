@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { Container, Eyebrow, Reveal } from "@/components/ui/primitives";
 import { BigCta } from "@/components/home/Closing";
+import EfficiencyCalculator from "@/components/services/EfficiencyCalculator";
 import RevealObserver from "@/components/ui/RevealObserver";
 import { services } from "@/data/content";
 
@@ -102,6 +103,7 @@ export default function ServicesPage() {
         </Container>
       </section>
 
+      <EfficiencyCalculator />
       <BigCta />
     </>
   );

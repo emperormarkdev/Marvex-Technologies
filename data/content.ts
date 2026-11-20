@@ -343,6 +343,7 @@ export const sectors = [
 
 export const navLinks = [
   { label: "Capabilities", href: "/services" },
+  { label: "Scope", href: "/scope" },
   { label: "Clients", href: "/clients" },
   { label: "Methodology", href: "/process" },
   { label: "Contact", href: "/contact" },
