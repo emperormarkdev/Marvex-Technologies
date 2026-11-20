@@ -32,8 +32,8 @@ export default function Footer() {
           <div>
             <Logo dark />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-neutral-400">
-              Engineering digital platforms, mobile applications, commerce
-              infrastructure, and enterprise software built for scale.
+              Software, AI systems, mobile applications, financial tools, and
+              cloud infrastructure built to last.
             </p>
           </div>
 
@@ -66,7 +66,7 @@ export default function Footer() {
               Capabilities
             </h3>
             <ul className="mt-4 space-y-1.5 text-sm">
-              {services.map((s) => (
+              {services.slice(0, 6).map((s) => (
                 <li key={s.slug}>
                   <Link
                     href={`/services#${s.slug}`}
@@ -76,6 +76,15 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  href="/services"
+                  className="inline-flex min-h-7 items-center gap-1.5 py-1 font-medium text-brand transition-colors hover:text-white"
+                >
+                  All 12 capabilities
+                  <ArrowRight size={13} aria-hidden="true" />
+                </Link>
+              </li>
             </ul>
           </nav>
 

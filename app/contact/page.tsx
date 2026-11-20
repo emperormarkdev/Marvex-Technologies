@@ -60,17 +60,17 @@ function ContactInner() {
   return (
     <>
       <RevealObserver />
-      <section className="hero-glow border-b border-line py-16 lg:py-24">
+      <section className="border-b border-line bg-surface py-16 lg:py-24">
         <Container>
           <Reveal>
             <div className="max-w-3xl">
               <Eyebrow>Contact</Eyebrow>
               <h1 className="mt-3 font-display text-[clamp(2.2rem,1.5rem+2.8vw,3.6rem)] font-semibold leading-[1.06] tracking-[-0.045em] text-ink">
-                Start a technical consultation.
+                Start a project conversation.
               </h1>
               <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-                Outline your objectives below or reach our team directly. We
-                respond within one business day with next steps.
+                Tell us what you are planning to build or modernize. Our team
+                responds within one business day.
               </p>
             </div>
           </Reveal>
@@ -284,26 +284,20 @@ function ContactInner() {
 
                 <div className="rounded-2xl border border-line bg-surface-card p-7 sm:p-8">
                   <h2 className="font-display text-lg font-semibold tracking-[-0.03em] text-ink">
-                    Next Steps
+                    Next steps
                   </h2>
                   <ol className="mt-4 space-y-3 text-sm leading-relaxed text-muted">
                     <li>
-                      <strong className="font-mono text-xs font-semibold text-brand-dark">
-                        01.
-                      </strong>{" "}
-                      Our engineering team responds within one business day.
+                      <strong className="font-semibold text-ink">1.</strong> Our
+                      team replies within one business day.
                     </li>
                     <li>
-                      <strong className="font-mono text-xs font-semibold text-brand-dark">
-                        02.
-                      </strong>{" "}
-                      We schedule a technical discovery session to review scope.
+                      <strong className="font-semibold text-ink">2.</strong> We
+                      schedule a discovery session to review requirements.
                     </li>
                     <li>
-                      <strong className="font-mono text-xs font-semibold text-brand-dark">
-                        03.
-                      </strong>{" "}
-                      You receive a clear blueprint, schedule, and fixed terms.
+                      <strong className="font-semibold text-ink">3.</strong> You
+                      receive a written blueprint, timeline, and fixed terms.
                     </li>
                   </ol>
                 </div>

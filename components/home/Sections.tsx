@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Clock, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, Clock } from "lucide-react";
 import { Container, Eyebrow, Reveal } from "@/components/ui/primitives";
 import { engagementModels, processSteps } from "@/data/content";
 
@@ -18,13 +18,13 @@ export function ProcessStrip() {
       <Container>
         <Reveal>
           <div className="max-w-2xl">
-            <Eyebrow>Delivery Methodology</Eyebrow>
+            <Eyebrow>Methodology</Eyebrow>
             <h2 className="mt-3 font-display text-[clamp(1.9rem,1.3rem+2.2vw,3rem)] font-semibold leading-[1.08] tracking-[-0.04em] text-ink">
-              Five disciplined phases from architecture to production.
+              Five clear stages from discovery to production.
             </h2>
             <p className="mt-4 text-base leading-relaxed text-muted sm:text-lg">
-              Select any phase below to inspect deliverables, stakeholder
-              inputs, and typical execution windows.
+              Select a stage below to see what we produce, what we need from
+              your team, and how work moves forward.
             </p>
           </div>
         </Reveal>
@@ -33,7 +33,7 @@ export function ProcessStrip() {
           <div
             className="flex flex-col gap-2.5"
             role="tablist"
-            aria-label="Delivery phases"
+            aria-label="Delivery stages"
           >
             {processSteps.map((s, i) => {
               const isSelected = i === activeIdx;
@@ -53,7 +53,7 @@ export function ProcessStrip() {
                   }`}
                 >
                   <span
-                    className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl font-mono text-xs font-semibold transition-colors ${
+                    className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl font-display text-xs font-semibold transition-colors ${
                       isSelected
                         ? "bg-brand text-neutral-950"
                         : "bg-brand-pale text-brand-dark"
@@ -91,16 +91,16 @@ export function ProcessStrip() {
           >
             <div>
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-6">
-                <span className="font-mono text-xs font-semibold tracking-[0.08em] text-brand-dark uppercase">
-                  Phase {current.no} / 05
+                <span className="text-sm font-semibold text-brand-dark">
+                  Stage {Number(current.no)} of 5
                 </span>
-                <span className="inline-flex items-center gap-1.5 font-mono text-xs font-medium text-muted">
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-muted">
                   <Clock
                     size={14}
                     className="text-brand-dark"
                     aria-hidden="true"
                   />
-                  Window: {current.duration}
+                  {current.duration}
                 </span>
               </div>
 
@@ -113,9 +113,9 @@ export function ProcessStrip() {
 
               <div className="mt-8 grid gap-4 sm:grid-cols-2">
                 <div className="rounded-xl border border-line bg-mist p-5">
-                  <p className="inline-flex items-center gap-2 font-mono text-[11px] font-semibold tracking-[0.06em] text-brand-dark uppercase">
+                  <p className="inline-flex items-center gap-2 text-xs font-semibold text-brand-dark">
                     <CheckCircle2 size={14} aria-hidden="true" />
-                    Key Deliverable
+                    Key deliverable
                   </p>
                   <p className="mt-2.5 text-sm leading-relaxed text-ink">
                     {current.output}
@@ -123,9 +123,8 @@ export function ProcessStrip() {
                 </div>
 
                 <div className="rounded-xl border border-line bg-mist p-5">
-                  <p className="inline-flex items-center gap-2 font-mono text-[11px] font-semibold tracking-[0.06em] text-brand-dark uppercase">
-                    <Sparkles size={14} aria-hidden="true" />
-                    Client Input
+                  <p className="text-xs font-semibold text-brand-dark">
+                    Client input
                   </p>
                   <p className="mt-2.5 text-sm leading-relaxed text-ink">
                     {current.needs}
@@ -141,7 +140,7 @@ export function ProcessStrip() {
                     key={step.no}
                     type="button"
                     onClick={() => setActiveIdx(idx)}
-                    aria-label={`View phase ${step.no}`}
+                    aria-label={`View stage ${Number(step.no)}`}
                     className="group flex h-8 min-w-8 items-center justify-center rounded-full px-1"
                   >
                     <span
@@ -174,18 +173,18 @@ export function EngagementModels() {
   return (
     <section
       className="cv-auto border-t border-line bg-mist py-20 lg:py-28"
-      aria-label="Engagement models"
+      aria-label="Ways to work together"
     >
       <Container>
         <Reveal>
           <div className="max-w-2xl">
-            <Eyebrow>Engagement Models</Eyebrow>
+            <Eyebrow>Engagement models</Eyebrow>
             <h2 className="mt-3 font-display text-[clamp(1.9rem,1.3rem+2.2vw,3rem)] font-semibold leading-[1.08] tracking-[-0.04em] text-ink">
-              Structured around your roadmap and scale.
+              Structured around your team and roadmap.
             </h2>
             <p className="mt-4 text-base leading-relaxed text-muted sm:text-lg">
-              Engage us for a focused product launch, an organization-wide
-              systems transformation, or ongoing SLA engineering support.
+              Work with us on a focused product launch, a full systems rollout,
+              or an ongoing engineering retainer.
             </p>
           </div>
         </Reveal>
@@ -205,7 +204,7 @@ export function EngagementModels() {
                 >
                   <div>
                     <p
-                      className={`font-mono text-[11px] font-semibold tracking-[0.08em] uppercase ${
+                      className={`text-xs font-semibold ${
                         featured ? "text-brand" : "text-brand-dark"
                       }`}
                     >

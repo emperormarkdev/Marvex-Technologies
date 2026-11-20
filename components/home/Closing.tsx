@@ -21,15 +21,15 @@ export function Faq() {
             <div>
               <SectionHeading
                 align="left"
-                eyebrow="Technical & Commercial FAQ"
+                eyebrow="Questions & answers"
                 title="Answers before we begin."
-                sub="Clear details on scoping, delivery timelines, intellectual property ownership, and post-launch SLA coverage."
+                sub="Straightforward details on scoping, delivery timelines, code ownership, and post-launch support."
               />
               <Link
                 href="/contact"
                 className="btn-press mt-7 inline-flex items-center gap-2 rounded-xl bg-ink px-6 py-3.5 text-sm font-medium text-surface hover:bg-brand hover:text-neutral-950"
               >
-                Speak with engineering
+                Talk to our team
                 <ArrowRight size={15} aria-hidden="true" />
               </Link>
             </div>
@@ -94,27 +94,27 @@ export function BigCta() {
       <Container>
         <Reveal>
           <div className="dark-bento relative overflow-clip rounded-2xl px-6 py-16 text-center text-white sm:px-12 lg:py-22">
-            <Eyebrow dark>Start an Engagement</Eyebrow>
+            <Eyebrow dark>Start a project</Eyebrow>
             <h2 className="mx-auto mt-3 max-w-2xl font-display text-[clamp(2rem,1.4rem+2.4vw,3.25rem)] font-semibold leading-[1.08] tracking-[-0.04em] text-white">
-              Ready to architect your next platform or system?
+              Ready to build your next platform or system?
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-neutral-300 sm:text-lg">
-              Share your objectives with our engineering team. We will scope the
-              architecture, timeline, and fixed commercial terms clearly.
+              Share what you want to build or modernize. We will review your
+              requirements and come back with a clear plan and fixed terms.
             </p>
             <div className="mt-8 flex flex-col justify-center gap-3.5 sm:flex-row">
               <Link
                 href="/contact"
                 className="btn-press inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-8 py-4 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
               >
-                Start a Consultation
+                Start a project
                 <ArrowRight size={16} aria-hidden="true" />
               </Link>
               <Link
                 href="/process"
                 className="btn-press inline-flex items-center justify-center gap-2 rounded-xl border border-neutral-700 bg-neutral-900 px-8 py-4 text-sm font-medium text-white hover:border-white hover:bg-neutral-800"
               >
-                Review Methodology
+                Review methodology
               </Link>
             </div>
           </div>

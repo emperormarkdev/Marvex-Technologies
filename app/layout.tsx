@@ -1,14 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Poppins } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { services, siteConfig } from "@/data/content";
 
-const poppins = Poppins({
-  variable: "--font-poppins",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
   display: "swap",
 });
 
@@ -26,25 +33,25 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Marvex Technologies | Websites, Mobile Apps & Custom Software",
+    default: "Marvex Technologies | Software Engineering, AI & Cloud Systems",
     template: "%s | Marvex Technologies",
   },
   description:
-    "Marvex Technologies designs and builds modern company websites, mobile apps (iOS & Android), online stores, POS systems, and custom business software in Port Harcourt and across Nigeria.",
+    "Marvex Technologies engineers digital platforms, mobile applications, AI systems, data and BI pipelines, FinTech payment rails, enterprise ERP software, cloud infrastructure, and cybersecurity.",
   keywords: [
     "Marvex Technologies",
-    "software company in Port Harcourt",
-    "software company in Nigeria",
-    "website design Port Harcourt",
-    "web development company Nigeria",
-    "mobile app development Nigeria",
-    "custom business software",
-    "POS software Nigeria",
-    "supermarket POS system",
-    "online store development",
-    "ecommerce website Nigeria",
-    "UI UX design agency",
-    "business automation",
+    "software engineering company",
+    "AI engineering",
+    "custom SaaS development",
+    "mobile app engineering",
+    "FinTech software development",
+    "data engineering and BI",
+    "enterprise ERP software",
+    "cloud DevOps and SRE",
+    "cybersecurity governance",
+    "legacy system modernization",
+    "omnichannel commerce platforms",
+    "product design systems",
   ],
   authors: [{ name: "Marvex Technologies", url: siteUrl }],
   creator: "Marvex Technologies",
@@ -137,7 +144,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${poppins.variable} h-full antialiased`}
+      className={`${inter.variable} ${plusJakartaSans.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>

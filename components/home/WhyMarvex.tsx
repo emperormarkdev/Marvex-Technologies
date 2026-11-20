@@ -2,24 +2,20 @@ import { Container, Eyebrow, Reveal } from "@/components/ui/primitives";
 
 const principles = [
   {
-    no: "01",
-    title: "End-to-End Accountability",
-    text: "Architecture, interface design, engineering, data migration, and cloud deployment executed by one cohesive team with zero fragmented handoffs.",
+    title: "Single-team accountability",
+    text: "Architecture, interface design, engineering, data migration, and cloud deployment are handled by one team so nothing gets lost between vendors.",
   },
   {
-    no: "02",
-    title: "Structured Organizational Adoption",
-    text: "Software only creates value when teams use it effectively. Every delivery includes tailored onboarding, role-based training, and operational documentation.",
+    title: "Real adoption across your teams",
+    text: "Software only pays off when people actually use it. Every major delivery includes practical training and clear documentation for staff and leadership.",
   },
   {
-    no: "03",
-    title: "Complete IP & Infrastructure Ownership",
-    text: "Your source code, cloud accounts, domains, and business data belong strictly to your organization. Zero proprietary lock-in or recurring seat tax.",
+    title: "Full ownership of code and data",
+    text: "Your source code, cloud accounts, domains, and records belong strictly to your company. No proprietary lock-in and no surprise per-seat licensing.",
   },
   {
-    no: "04",
-    title: "Fixed Scope & Transparent Milestones",
-    text: "Every engagement is governed by a documented technical blueprint, weekly staging reviews, and agreed commercial terms before development begins.",
+    title: "Written scope before work begins",
+    text: "Every engagement starts with a documented blueprint, weekly staging reviews, and agreed commercial terms so you always know where things stand.",
   },
 ];
 
@@ -27,20 +23,19 @@ export default function WhyMarvex() {
   return (
     <section
       className="cv-auto border-y border-neutral-800 bg-black py-20 text-white lg:py-28"
-      aria-label="Engineering principles"
+      aria-label="How we operate"
     >
       <Container>
         <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           <Reveal>
             <div className="lg:sticky lg:top-28">
-              <Eyebrow dark>Engineering Standards</Eyebrow>
+              <Eyebrow dark>How we operate</Eyebrow>
               <h2 className="mt-3 font-display text-[clamp(1.9rem,1.3rem+2.2vw,3rem)] font-semibold leading-[1.08] tracking-[-0.04em] text-white">
-                Built to endure. Delivered with precision.
+                Clear scope, solid engineering, and long-term ownership.
               </h2>
               <p className="mt-4 max-w-md text-base leading-relaxed text-neutral-400">
-                We combine disciplined software engineering with clear
-                commercial governance so every system ships on schedule and
-                scales cleanly over time.
+                We focus on shipping software that holds up in production,
+                backed by straightforward communication and measurable delivery.
               </p>
             </div>
           </Reveal>
@@ -51,10 +46,7 @@ export default function WhyMarvex() {
                 <Reveal key={p.title} delay={i * 60}>
                   <div className="flex h-full flex-col justify-between bg-[#0a0a0a] p-7 sm:p-8">
                     <div>
-                      <span className="font-mono text-xs font-medium tracking-[0.1em] text-brand">
-                        {p.no}
-                      </span>
-                      <h3 className="mt-5 font-display text-lg font-semibold tracking-[-0.03em] text-white">
+                      <h3 className="font-display text-lg font-semibold tracking-[-0.03em] text-white">
                         {p.title}
                       </h3>
                       <p className="mt-3 text-sm leading-relaxed text-neutral-400">

@@ -17,9 +17,9 @@
   --color-night: #080808;
   --color-night-card: #141414;
 
-  /* Poppins everywhere */
-  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  /* Plus Jakarta Sans for display headings, Inter for body and UI */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
@@ -231,26 +231,13 @@ body {
   );
 }
 
-/* Soft atmospheric hero & pure-black bento surfaces (zero dark blue) */
+/* Clean architectural surfaces (no neon radial glows) */
 .hero-glow {
-  background:
-    radial-gradient(
-      65% 55% at 50% 0% var(--in-oklab),
-      rgba(0, 196, 122, 0.14) 0%,
-      rgba(0, 196, 122, 0.03) 55%,
-      transparent 100%
-    ),
-    var(--color-surface);
+  background: var(--color-surface);
 }
 
 .dark-bento {
-  background:
-    radial-gradient(
-      60% 50% at 50% 0% var(--in-oklab),
-      rgba(0, 196, 122, 0.14) 0%,
-      transparent 70%
-    ),
-    #0a0a0a;
+  background: #0a0a0a;
   border: 1px solid #262626;
 }
 

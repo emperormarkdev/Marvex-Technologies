@@ -19,8 +19,6 @@ export default function OpenGraphImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           backgroundColor: "#000000",
-          backgroundImage:
-            "radial-gradient(circle at 85% 15%, rgba(0, 196, 122, 0.22), transparent 55%)",
           padding: "72px 80px",
           color: "#ffffff",
           fontFamily: "sans-serif",
@@ -69,7 +67,7 @@ export default function OpenGraphImage() {
               color: "#ffffff",
             }}
           >
-            Software engineered for ambitious businesses.
+            Software, AI systems, and digital platforms built to last.
           </div>
           <div
             style={{
@@ -80,8 +78,8 @@ export default function OpenGraphImage() {
               maxWidth: 820,
             }}
           >
-            Digital platforms, iOS & Android apps, commerce infrastructure,
-            and enterprise operations software.
+            Web platforms, mobile apps, AI systems, FinTech, data &amp; BI,
+            enterprise ERP, cloud infrastructure, and cybersecurity.
           </div>
         </div>
 

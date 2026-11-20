@@ -4,8 +4,7 @@
 
 export const siteConfig = {
   name: "Marvex Technologies",
-  tagline:
-    "Software, platforms, and digital infrastructure engineered for scale.",
+  tagline: "Software, AI systems, and digital platforms built to last.",
   email: "engage@marvextechnologies.com",
   emailRecipient: "emperormarktech@gmail.com",
   phoneDisplay: "+234 904 044 7548",
@@ -32,268 +31,313 @@ export const clients: Client[] = [
 
 export type Service = {
   slug: string;
+  category: string;
   title: string;
   short: string;
   description: string;
   deliverables: string[];
-  timeline: string;
 };
 
 export const services: Service[] = [
   {
-    slug: "websites",
-    title: "Digital Platforms & Web Flagships",
+    slug: "digital-platforms",
+    category: "Web platforms",
+    title: "Digital Platforms & Corporate Websites",
     short:
-      "High-performance corporate platforms engineered for authority, speed, and conversion.",
+      "Fast, structured corporate websites built for clarity, search visibility, and easy publishing.",
     description:
-      "We design and engineer flagship web platforms with modern architectures, clean editorial systems, and structured content management so your organization communicates with clarity and speed.",
+      "Your website is often the first place partners, investors, and customers evaluate your company. We design and build fast web platforms with clean structure, technical SEO, and a content setup your team can manage independently.",
     deliverables: [
-      "Bespoke visual architecture and design system",
-      "Sub-second load times and technical SEO foundation",
-      "Responsive engineering across every viewport",
-      "Structured CMS for autonomous team publishing",
+      "Custom visual design and component system",
+      "Fast page loads and Core Web Vitals tuning",
+      "Technical SEO, structured data, and accessibility",
+      "Headless CMS for direct team publishing",
     ],
-    timeline: "2 to 4 weeks",
   },
   {
-    slug: "mobile-apps",
-    title: "Mobile Engineering (iOS & Android)",
+    slug: "mobile-engineering",
+    category: "Mobile",
+    title: "Mobile Apps (iOS & Android)",
     short:
-      "Production mobile applications built for reliability, fluid interaction, and App Store scale.",
+      "Reliable iPhone and Android applications designed for everyday speed and real-world use.",
     description:
-      "From consumer products and logistics platforms to loyalty ecosystems and internal field apps, we architect, build, and ship native-quality iOS and Android applications end to end.",
+      "Whether you are launching a customer product, a logistics app, or a financial tool, we handle product architecture, interface design, engineering, and full release on the App Store and Google Play.",
     deliverables: [
-      "Unified iOS and Android engineering",
-      "Authentication, push telemetry, and offline resilience",
-      "Integrated card, transfer, and wallet payment rails",
-      "End-to-end App Store and Google Play release",
+      "iOS and Android development from a unified codebase",
+      "Secure sign-in, push notifications, and offline sync",
+      "Card, bank transfer, and wallet payment integrations",
+      "App Store and Google Play review and release",
     ],
-    timeline: "6 to 12 weeks",
   },
   {
-    slug: "web-apps",
-    title: "Custom Web Applications & Portals",
+    slug: "web-applications",
+    category: "Web software",
+    title: "Custom SaaS & Web Applications",
     short:
-      "Full-stack SaaS products, client portals, and multi-tenant web platforms built from the ground up.",
+      "Client portals, SaaS products, and internal web software built around complex workflows.",
     description:
-      "We engineer secure, scalable web applications tailored to complex workflows, giving your customers, partners, and internal teams real-time access to accounts, transactions, and analytics.",
+      "When off-the-shelf tools stop fitting how you work, we build dedicated web applications. Customers, partners, and staff get secure accounts, real-time dashboards, and dependable APIs.",
     deliverables: [
-      "Role-based customer, partner, and admin portals",
-      "Real-time dashboards, reporting, and audit logs",
-      "Modular API architecture and document exports",
-      "High-availability cloud deployment and backups",
+      "Multi-tenant SaaS and role-based portal architecture",
+      "Live operational dashboards, exports, and audit trails",
+      "Clean REST and GraphQL API development",
+      "Cloud deployment with monitoring and backups",
     ],
-    timeline: "4 to 10 weeks",
   },
   {
-    slug: "ecommerce",
-    title: "Commerce Platforms & Marketplaces",
+    slug: "ai-engineering",
+    category: "Artificial intelligence",
+    title: "AI Systems & Workflow Intelligence",
     short:
-      "Scalable storefronts and multi-vendor marketplaces built for high-volume transactions.",
+      "Practical AI agents, private document search, and automated workflows integrated into your stack.",
     description:
-      "We engineer fast digital commerce platforms with seamless checkout, automated payment reconciliation, dynamic fulfillment logic, and unified catalog and order control.",
+      "We put modern language models to work on real operational problems: searching internal company documents, automating customer support, extracting data from invoices and forms, and assisting staff inside existing software.",
     deliverables: [
-      "High-conversion storefront and catalog architecture",
-      "Paystack, Flutterwave, and card gateway integration",
-      "Automated shipping zones, taxes, and order tracking",
-      "Centralized inventory and fulfillment operations",
+      "Private company knowledge search over your documents",
+      "AI assistants for customer support and internal teams",
+      "Automated document reading and data extraction",
+      "Evaluation, guardrails, and response speed tuning",
     ],
-    timeline: "3 to 6 weeks",
   },
   {
-    slug: "management-systems",
-    title: "Enterprise Operations & ERP Software",
+    slug: "data-analytics",
+    category: "Data & analytics",
+    title: "Data Engineering & Business Intelligence",
     short:
-      "Unified internal platforms that centralize inventory, approvals, finance, and multi-team workflows.",
+      "Clean data pipelines, cloud warehouses, and live reporting dashboards for leadership.",
     description:
-      "We replace fragmented tools and manual processes with purpose-built operational software that connects inventory, procurement, HR, approvals, and executive reporting in a single system of record.",
+      "Instead of waiting days for manual spreadsheet reports, we connect your sales, finance, and operations data into one warehouse with live dashboards leadership can trust.",
     deliverables: [
-      "Custom workflow modeling around your operations",
-      "Structured migration of historical company data",
-      "Granular role permissions and executive reporting",
-      "Comprehensive team onboarding and documentation",
+      "Automated data pipelines and cloud warehousing",
+      "Live executive reporting and KPI dashboards",
+      "Revenue, margin, and branch performance tracking",
+      "Scheduled exports and governed data access",
     ],
-    timeline: "4 to 8 weeks",
   },
   {
-    slug: "pos-systems",
-    title: "Retail & Multi-Branch Infrastructure",
+    slug: "fintech-payments",
+    category: "Financial systems",
+    title: "FinTech, Payments & Billing Systems",
     short:
-      "High-throughput point of sale and live multi-location inventory synchronization.",
+      "Digital wallets, subscription billing, payment routing, and automated reconciliation.",
     description:
-      "Built for multi-branch retail chains, pharmacies, and hospitality groups requiring fast checkout, hardware integration, real-time stock visibility, and consolidated branch analytics.",
+      "Financial software leaves no room for guesswork. We build double-entry ledgers, wallet systems, automated billing, KYC onboarding, and payment integrations across Stripe, Paystack, Flutterwave, and bank APIs.",
     deliverables: [
-      "Centralized SKU catalog and pricing governance",
-      "Hardware integration for scanners and thermal printers",
-      "Real-time inventory sync across every location",
-      "Live branch performance and audit reporting",
+      "Double-entry ledger and digital wallet systems",
+      "Stripe, Paystack, Flutterwave, and bank API integrations",
+      "Automated invoicing, settlements, and webhook reconciliation",
+      "KYC verification flows and full transaction logs",
     ],
-    timeline: "2 to 6 weeks",
   },
   {
-    slug: "ui-ux-design",
+    slug: "commerce-retail",
+    category: "Commerce & retail",
+    title: "Commerce & Multi-Branch Retail Systems",
+    short:
+      "Online storefronts, marketplaces, and real-time multi-location POS and inventory sync.",
+    description:
+      "We build commerce platforms that connect online sales with physical locations. Manage catalogs, pricing, online checkout, barcode hardware, and live stock across every branch from one system.",
+    deliverables: [
+      "Online storefronts and multi-vendor marketplaces",
+      "Multi-branch POS with real-time stock synchronization",
+      "Shipping rules, pricing controls, and order tracking",
+      "Barcode scanner and thermal receipt printer support",
+    ],
+  },
+  {
+    slug: "enterprise-erp",
+    category: "Enterprise software",
+    title: "Internal Operations & ERP Software",
+    short:
+      "Centralized software for procurement, inventory, HR, approvals, and daily operations.",
+    description:
+      "We replace scattered spreadsheets and disconnected tools with one internal system modeled directly around your departments, approval chains, and reporting structure.",
+    deliverables: [
+      "Workflows tailored to your departments and rules",
+      "Clean migration of existing company records",
+      "Role-based permissions and multi-level approvals",
+      "Structured staff onboarding and documentation",
+    ],
+  },
+  {
+    slug: "cloud-devops",
+    category: "Infrastructure",
+    title: "Cloud Architecture, DevOps & Reliability",
+    short:
+      "Resilient cloud hosting, automated deployments, uptime monitoring, and disaster recovery.",
+    description:
+      "We design and maintain cloud environments on AWS, Google Cloud, Azure, and modern edge platforms with automated deployment pipelines, alerts, backups, and ongoing engineering support.",
+    deliverables: [
+      "Cloud infrastructure setup and infrastructure as code",
+      "Automated CI/CD pipelines and staging environments",
+      "Real-time uptime monitoring, logs, and incident alerts",
+      "Automated backups, failover planning, and SLA support",
+    ],
+  },
+  {
+    slug: "cybersecurity",
+    category: "Security",
+    title: "Cybersecurity & Access Governance",
+    short:
+      "Security reviews, single sign-on, encrypted data handling, and compliance hardening.",
+    description:
+      "We audit existing applications and build security directly into new systems through identity controls, encryption standards, secret management, and clear activity logs.",
+    deliverables: [
+      "Application and cloud security reviews",
+      "SSO, multi-factor authentication, and role controls",
+      "Data encryption and secrets management hardening",
+      "Activity audit logs and compliance preparation",
+    ],
+  },
+  {
+    slug: "legacy-modernization",
+    category: "Modernization",
+    title: "Legacy Modernization & Cloud Migration",
+    short:
+      "Move slow, outdated software onto modern cloud architecture without halting operations.",
+    description:
+      "Outdated software slows teams down and creates operational risk. We plan and execute phased migrations that modernize your codebase, databases, and APIs while keeping daily work running.",
+    deliverables: [
+      "Technical audit of legacy code and infrastructure",
+      "Phased migration plan with zero operational downtime",
+      "Database upgrades and verified data transfer",
+      "API wrappers linking older tools to new platforms",
+    ],
+  },
+  {
+    slug: "product-design",
+    category: "Design",
     title: "Product Design & Design Systems",
     short:
-      "Research-backed interfaces, interactive prototypes, and scalable component libraries.",
+      "Clear interface design, clickable prototypes, and reusable component libraries.",
     description:
-      "Before engineering begins, we define the product architecture, user flows, and visual language through high-fidelity clickable prototypes and token-driven design systems.",
+      "Before writing code, we map user journeys and design clickable prototypes so your team can test every screen, refine decisions early, and ship with a consistent visual system.",
     deliverables: [
-      "User journey mapping and information architecture",
-      "Interactive high-fidelity prototypes for validation",
-      "Scalable multi-platform component library",
-      "Engineering-ready specifications and assets",
+      "User flow mapping and information architecture",
+      "Clickable prototypes for stakeholder review",
+      "Reusable UI component libraries and design tokens",
+      "Clean handoff specifications for engineering",
     ],
-    timeline: "1 to 3 weeks",
-  },
-  {
-    slug: "automation",
-    title: "Workflow Automation & Systems Integration",
-    short:
-      "Connect disparate platforms, automate operational pipelines, and eliminate manual bottlenecks.",
-    description:
-      "We engineer reliable integrations across payment gateways, ERPs, messaging channels, CRM tools, and AI workflows so data moves accurately across your organization in real time.",
-    deliverables: [
-      "Automated billing, reconciliation, and notifications",
-      "Custom REST, GraphQL, and payment webhook pipelines",
-      "AI-assisted customer and internal support workflows",
-      "Bi-directional sync between legacy and modern tools",
-    ],
-    timeline: "1 to 4 weeks",
-  },
-  {
-    slug: "support",
-    title: "Cloud Architecture & Managed Reliability",
-    short:
-      "Hardened cloud infrastructure, automated backups, security monitoring, and SLA engineering support.",
-    description:
-      "We provision resilient cloud environments, custom domain and mail infrastructure, CI/CD pipelines, and continuous post-launch engineering to keep critical systems fast and secure.",
-    deliverables: [
-      "Cloud infrastructure, DNS, and enterprise email setup",
-      "Automated backups, patching, and security audits",
-      "Uptime monitoring and performance optimization",
-      "Dedicated SLA engineering response and maintenance",
-    ],
-    timeline: "Retainer or SLA",
   },
 ];
 
 export const processSteps = [
   {
     no: "01",
-    title: "Discovery & Systems Audit",
-    summary: "Align on commercial goals, technical requirements, and constraints.",
-    duration: "3 to 5 days",
-    text: "We work directly with your stakeholders to map operational requirements, technical dependencies, user journeys, and success metrics before defining the solution.",
-    output: "Technical discovery brief and system requirements",
-    needs: "Stakeholder alignment and access to existing workflows",
+    title: "Discovery & Technical Audit",
+    summary: "Map your goals, workflows, and technical constraints.",
+    duration: "Stage 1",
+    text: "We sit with your leadership and technical stakeholders to understand what needs to be built, how your current tools operate, and what success looks like in practice.",
+    output: "Written discovery brief and system requirements",
+    needs: "Stakeholder input and access to current workflows",
   },
   {
     no: "02",
     title: "Architecture & Fixed Scope",
-    summary: "Detailed technical roadmap, milestones, and transparent commercial terms.",
-    duration: "3 to 5 days",
-    text: "We deliver a clear system architecture, milestone schedule, and fixed commercial proposal so scope, timelines, and deliverables are locked before engineering starts.",
-    output: "System blueprint, delivery schedule, and fixed proposal",
-    needs: "Formal sign-off on scope and milestones",
+    summary: "Clear technical blueprint, schedule, and commercial terms.",
+    duration: "Stage 2",
+    text: "Before engineering starts, we put the system design, milestones, and total investment in writing so there is no ambiguity around scope or delivery dates.",
+    output: "Technical blueprint, roadmap, and fixed proposal",
+    needs: "Approval on scope and project milestones",
   },
   {
     no: "03",
-    title: "Design & Iterative Engineering",
-    summary: "Weekly production-grade builds deployed to a private staging environment.",
-    duration: "2 to 8 weeks",
-    text: "Design and engineering run in structured weekly sprints. Every milestone is deployed to a live staging URL so your team can review progress and verify functionality continuously.",
-    output: "Weekly staging deployments and milestone reviews",
-    needs: "Structured weekly feedback from your product lead",
+    title: "Design & Weekly Builds",
+    summary: "Working software pushed to a private staging link every week.",
+    duration: "Stage 3",
+    text: "Design and engineering move in focused weekly sprints. You review real working software on a private staging environment every week instead of waiting until the end.",
+    output: "Weekly staging builds and progress reviews",
+    needs: "Timely weekly feedback from your project lead",
   },
   {
     no: "04",
-    title: "Migration, QA & Deployment",
-    summary: "End-to-end testing, data migration, production cutover, and team enablement.",
-    duration: "1 to 2 weeks",
-    text: "We execute automated and manual QA, migrate historical data cleanly, deploy to hardened cloud infrastructure, and onboard your operational teams with clear documentation.",
-    output: "Production launch, verified data migration, and playbooks",
-    needs: "Final UAT sign-off and team onboarding sessions",
+    title: "Testing, Migration & Launch",
+    summary: "Quality assurance, clean data transfer, and team onboarding.",
+    duration: "Stage 4",
+    text: "We run thorough testing, migrate historical data cleanly, deploy to production cloud servers, and train your teams with straightforward documentation.",
+    output: "Live production release, migrated data, and guides",
+    needs: "Final review sign-off and team training time",
   },
   {
     no: "05",
-    title: "Managed Reliability & Evolution",
-    summary: "Continuous monitoring, security updates, and iterative feature delivery.",
+    title: "Support & Continuous Improvement",
+    summary: "Monitoring, security updates, and new features after launch.",
     duration: "Ongoing",
-    text: "Post-launch, our engineers remain engaged for proactive monitoring, automated backups, infrastructure scaling, and ongoing product iterations as your organization grows.",
-    output: "SLA-backed uptime, updates, and technical partnership",
-    needs: "Periodic roadmap reviews as priorities evolve",
+    text: "After launch, our engineers stay responsible for uptime monitoring, backups, security patches, and rolling out new capabilities as your business evolves.",
+    output: "Reliable uptime, regular updates, and direct support",
+    needs: "Periodic roadmap check-ins as priorities change",
   },
 ];
 
 export const engagementModels = [
   {
-    label: "01 / FOCUSED DELIVERY",
-    title: "Product & Platform Sprint",
-    text: "Dedicated design and engineering for a flagship web platform, mobile MVP, or targeted operational module with fixed scope and delivery dates.",
+    label: "Focused delivery",
+    title: "Single Product or Platform",
+    text: "A dedicated team to design and ship one corporate website, mobile app, AI workflow, or internal module with fixed scope and clear milestones.",
   },
   {
-    label: "02 / END-TO-END TRANSFORMATION",
-    title: "Full Systems Implementation",
-    text: "Complete architecture, custom software engineering, legacy data migration, multi-branch rollout, and structured team onboarding.",
+    label: "Full implementation",
+    title: "Organization-Wide Systems",
+    text: "Complete architecture, custom software development, legacy data migration, multi-branch rollout, security setup, and team onboarding.",
   },
   {
-    label: "03 / LONG-TERM PARTNERSHIP",
+    label: "Long-term retainer",
     title: "Dedicated Engineering & SLA",
-    text: "Ongoing engineering capacity covering infrastructure management, security maintenance, SLA support, and continuous product evolution.",
+    text: "Ongoing engineering capacity covering cloud operations, security maintenance, priority support, and continuous product development.",
   },
 ];
 
 export const faqs = [
   {
-    q: "How are engagements scoped and priced?",
-    a: "Every engagement begins with a focused technical discovery. From there, we provide a transparent fixed-scope proposal or retainer structure with clear milestones and zero hidden costs.",
+    q: "How are projects scoped and priced?",
+    a: "Every project starts with technical discovery. Once requirements are clear, we provide a fixed-scope proposal or monthly engineering retainer with defined milestones and no hidden charges.",
   },
   {
-    q: "What are typical delivery timelines?",
-    a: "Flagship web platforms typically ship in 2 to 4 weeks. Commerce platforms take 3 to 6 weeks. Custom web applications, mobile apps, and enterprise operational systems range from 4 to 12 weeks depending on scope.",
+    q: "How do delivery timelines work?",
+    a: "Timelines depend on system complexity, integrations, and compliance needs, and are locked during scoping. Every project ships weekly staging builds so you see steady progress from the first week.",
   },
   {
-    q: "Who retains ownership of source code and data?",
-    a: "Your organization retains 100% ownership of all custom source code, intellectual property, domains, cloud accounts, and operational data upon delivery.",
+    q: "Who owns the source code and business data?",
+    a: "You own 100% of the custom source code, intellectual property, domains, cloud accounts, and business data upon delivery.",
   },
   {
-    q: "How do you handle team onboarding and adoption?",
-    a: "Every major deployment includes structured training sessions for leadership and operational staff, backed by concise usage documentation so teams adopt new systems smoothly.",
+    q: "Will you train our staff to use the new system?",
+    a: "Yes. Every major launch includes structured onboarding sessions for managers and operational staff, along with clear written guides.",
   },
   {
-    q: "Do you provide post-launch support and infrastructure management?",
-    a: "Yes. We offer ongoing SLA plans covering proactive monitoring, automated backups, security updates, performance tuning, and priority engineering response.",
+    q: "Do you handle hosting, monitoring, and support after launch?",
+    a: "Yes. We offer ongoing SLA support covering uptime monitoring, automated backups, security updates, cloud scaling, and priority bug fixes.",
   },
   {
-    q: "Can you migrate data and integrate with existing systems?",
-    a: "Yes. We handle structured migrations from spreadsheets or legacy databases and engineer API integrations with payment gateways, accounting tools, and third-party platforms.",
+    q: "Can you migrate data from our old software or spreadsheets?",
+    a: "Yes. We handle structured data migrations from spreadsheets or legacy databases and build API integrations with payment gateways, accounting software, and third-party tools.",
   },
 ];
 
 export const sectors = [
   {
     title: "Commerce & Multi-Branch Retail",
-    text: "High-throughput storefronts, unified inventory control, and real-time multi-location operational visibility.",
+    text: "Online storefronts, unified inventory control, and live sales visibility across multiple locations.",
   },
   {
-    title: "Hospitality & Food Systems",
-    text: "Integrated ordering workflows, kitchen routing, supply tracking, and live revenue analytics.",
+    title: "Financial Services & FinTech",
+    text: "Payment integrations, digital wallets, automated billing, reconciliation, and auditable ledgers.",
   },
   {
     title: "Logistics & Supply Chain",
-    text: "End-to-end fleet, warehouse, dispatch, and settlement platforms built for operational accuracy.",
+    text: "Fleet, warehouse, dispatch, and settlement software built for day-to-day operational accuracy.",
+  },
+  {
+    title: "Hospitality & Food Groups",
+    text: "Integrated ordering, kitchen routing, supply tracking, and clear revenue reporting.",
   },
   {
     title: "Agribusiness & Production",
-    text: "Batch traceability, yield management, procurement tracking, and wholesale distribution systems.",
+    text: "Batch tracking, yield records, procurement workflows, and wholesale order management.",
   },
   {
-    title: "High-Growth Ventures",
-    text: "Scalable web and mobile products engineered to take new digital business models from launch to scale.",
-  },
-  {
-    title: "Enterprise & Professional Services",
-    text: "Flagship web platforms, client portals, workflow automation, and secure internal management systems.",
+    title: "Enterprise & High-Growth Companies",
+    text: "Corporate web platforms, AI workflows, client portals, and secure internal management software.",
   },
 ];
 
