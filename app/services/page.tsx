@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { Container, Eyebrow, Reveal } from "@/components/ui/primitives";
 import { BigCta } from "@/components/home/Closing";
-import EfficiencyCalculator from "@/components/services/EfficiencyCalculator";
 import RevealObserver from "@/components/ui/RevealObserver";
 import { services } from "@/data/content";
 
@@ -69,7 +68,7 @@ export default function ServicesPage() {
                         href={`/contact?service=${s.slug}`}
                         className="btn-press mt-7 inline-flex items-center gap-2 rounded-xl bg-ink px-6 py-3 text-sm font-medium text-surface hover:bg-brand hover:text-neutral-950"
                       >
-                        Scope this capability
+                        Discuss this capability
                         <ArrowRight size={15} aria-hidden="true" />
                       </Link>
                     </div>
@@ -103,7 +102,6 @@ export default function ServicesPage() {
         </Container>
       </section>
 
-      <EfficiencyCalculator />
       <BigCta />
     </>
   );

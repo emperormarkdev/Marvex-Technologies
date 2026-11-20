@@ -133,10 +133,16 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-neutral-800 pt-6 text-xs text-neutral-400">
+        <div className="flex flex-col items-start justify-between gap-3 border-t border-neutral-800 pt-6 text-xs text-neutral-400 sm:flex-row sm:items-center">
           <p>
             © <Year /> {siteConfig.name}. All rights reserved.
           </p>
+          <Link
+            href="/privacy"
+            className="transition-colors hover:text-white"
+          >
+            Privacy Policy
+          </Link>
         </div>
       </div>
     </footer>

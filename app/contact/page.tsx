@@ -8,8 +8,6 @@ import {
   ArrowRight,
   Calendar,
   CheckCircle2,
-  Download,
-  Loader2,
   Mail,
   MapPin,
   Phone,
@@ -588,14 +586,7 @@ function ContactInner() {
                               className="btn-press inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-7 py-3.5 text-sm font-semibold text-neutral-950 hover:bg-[#00db89] disabled:cursor-not-allowed disabled:opacity-70"
                             >
                               {inquiryStatus === "submitting" ? (
-                                <>
-                                  <Loader2
-                                    size={16}
-                                    className="animate-spin"
-                                    aria-hidden="true"
-                                  />
-                                  Sending inquiry...
-                                </>
+                                "Sending inquiry..."
                               ) : (
                                 <>
                                   Submit inquiry
@@ -603,6 +594,16 @@ function ContactInner() {
                                 </>
                               )}
                             </button>
+                            <p className="mt-3 text-xs text-muted">
+                              By submitting, you agree to our{" "}
+                              <Link
+                                href="/privacy"
+                                className="underline decoration-line underline-offset-4 hover:text-ink"
+                              >
+                                Privacy Policy
+                              </Link>
+                              .
+                            </p>
                           </div>
                         </form>
                       )}
@@ -647,7 +648,6 @@ function ContactInner() {
                               onClick={triggerInviteDownload}
                               className="btn-press inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
                             >
-                              <Download size={15} aria-hidden="true" />
                               Download .ics again
                             </button>
                             <button
@@ -878,17 +878,9 @@ function ContactInner() {
                               className="btn-press inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-7 py-3.5 text-sm font-semibold text-neutral-950 hover:bg-[#00db89] disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
                             >
                               {callStatus === "submitting" ? (
-                                <>
-                                  <Loader2
-                                    size={16}
-                                    className="animate-spin"
-                                    aria-hidden="true"
-                                  />
-                                  Reserving slot...
-                                </>
+                                "Reserving slot..."
                               ) : (
                                 <>
-                                  <Calendar size={16} aria-hidden="true" />
                                   Reserve discovery call
                                   <ArrowRight size={15} aria-hidden="true" />
                                 </>
@@ -950,17 +942,18 @@ function ContactInner() {
 
                 <div className="rounded-2xl border border-line bg-surface-card p-7 sm:p-8">
                   <h2 className="font-display text-lg font-semibold tracking-[-0.03em] text-ink">
-                    Need a structured brief first?
+                    What happens next
                   </h2>
-                  <p className="mt-2 text-sm leading-relaxed text-muted">
-                    Use our scope builder to list your capabilities and save a
-                    clean PDF brief.
-                  </p>
+                  <ol className="mt-3 space-y-2.5 text-sm leading-relaxed text-muted">
+                    <li>1. An engineer reviews your note within one business day.</li>
+                    <li>2. We schedule a focused 30-minute technical call.</li>
+                    <li>3. You receive a written architecture plan and fixed terms.</li>
+                  </ol>
                   <Link
-                    href="/scope"
+                    href="/process"
                     className="btn-press mt-5 inline-flex items-center gap-2 rounded-xl border border-line bg-surface-elevated px-4 py-2.5 text-sm font-medium text-ink hover:border-brand"
                   >
-                    Open scope builder
+                    View methodology
                     <ArrowRight size={15} aria-hidden="true" />
                   </Link>
                 </div>
