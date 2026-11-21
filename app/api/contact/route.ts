@@ -20,6 +20,7 @@ interface ContactPayload {
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const CANONICAL_ORIGIN = "https://marvextechnologies.vercel.app";
 
 function clean(value: unknown, max = 2000): string {
   if (typeof value !== "string") return "";
@@ -141,7 +142,8 @@ export async function POST(request: Request) {
       if (res.ok) {
         return NextResponse.json({ ok: true, delivered: true });
       }
-      console.error("[contact] Resend failed:", res.status);
+      const errBody = await res.text().catch(() => "");
+      console.error("[contact] Resend failed:", res.status, errBody);
     } catch (err) {
       console.error("[contact] Resend error:", err);
     }
@@ -165,24 +167,22 @@ export async function POST(request: Request) {
         }),
       });
 
-      if (res.ok) {
+      const data = (await res.json().catch(() => ({}))) as {
+        success?: boolean;
+        message?: string;
+      };
+      if (res.ok && data.success) {
         return NextResponse.json({ ok: true, delivered: true });
       }
-      console.error("[contact] Web3Forms failed:", res.status);
+      console.error("[contact] Web3Forms failed:", res.status, data.message);
     } catch (err) {
       console.error("[contact] Web3Forms error:", err);
     }
   }
 
-  // 3. Zero-config FormSubmit AJAX delivery straight to siteConfig.emailRecipient
+  // 3. FormSubmit AJAX delivery to siteConfig.emailRecipient (consistent origin for local + prod)
+  let providerMessage = "";
   try {
-    const origin =
-      request.headers.get("origin") ||
-      "https://marvextechnologies.vercel.app";
-    const referer =
-      request.headers.get("referer") ||
-      "https://marvextechnologies.vercel.app/contact";
-
     const payload: Record<string, string> = {
       _subject: subject,
       _replyto: email,
@@ -195,7 +195,8 @@ export async function POST(request: Request) {
     if (company) payload.Organization = company;
     if (phone) payload.Phone = phone;
     if (type === "call") {
-      payload["Requested Slot"] = `${clean(body.date, 80)} at ${clean(body.time, 40)} (WAT)`;
+      payload["Requested Slot"] =
+        `${clean(body.date, 80)} at ${clean(body.time, 40)} (WAT)`;
       payload.Topic = clean(body.topic, 160);
     } else {
       const service = clean(body.service, 160);
@@ -210,31 +211,41 @@ export async function POST(request: Request) {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Origin: origin,
-          Referer: referer,
+          Origin: CANONICAL_ORIGIN,
+          Referer: `${CANONICAL_ORIGIN}/contact`,
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
         },
         body: JSON.stringify(payload),
       }
     );
 
-    if (res.ok) {
-      const data = (await res.json().catch(() => ({}))) as {
-        success?: string | boolean;
-      };
-      if (data.success === true || data.success === "true") {
-        return NextResponse.json({ ok: true, delivered: true });
-      }
+    const data = (await res.json().catch(() => ({}))) as {
+      success?: string | boolean;
+      message?: string;
+    };
+
+    if (res.ok && (data.success === true || data.success === "true")) {
+      return NextResponse.json({ ok: true, delivered: true });
+    }
+
+    if (data.message) {
+      providerMessage = data.message;
+      console.warn("[contact] FormSubmit response:", data.message);
     }
   } catch (err) {
-    console.error("[contact] FormSubmit fallback error:", err);
+    console.error("[contact] FormSubmit error:", err);
   }
 
-  console.info("[contact] Submission logged:\n" + text);
-  return NextResponse.json({
-    ok: true,
-    delivered: false,
-    recipient,
-    subject,
-    text,
-  });
+  // Never report ok: true if the email was not actually delivered
+  return NextResponse.json(
+    {
+      ok: false,
+      delivered: false,
+      error:
+        providerMessage ||
+        `Email delivery is not yet activated for ${recipient}. Please check ${recipient} (including Spam) for the activation email, or configure RESEND_API_KEY / WEB3FORMS_ACCESS_KEY.`,
+    },
+    { status: 503 }
+  );
 }
