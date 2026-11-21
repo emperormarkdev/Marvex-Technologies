@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/primitives";
 
 const overview = [
@@ -81,14 +80,9 @@ export default function Hero() {
           >
             <Link
               href="/contact"
-              className="group btn-press inline-flex items-center justify-center gap-2 rounded-xl bg-ink px-7 py-4 text-sm font-medium text-surface hover:bg-brand hover:text-neutral-950"
+              className="btn-press inline-flex items-center justify-center rounded-xl bg-ink px-7 py-4 text-sm font-medium text-surface hover:bg-brand hover:text-neutral-950"
             >
               Start a project
-              <ArrowRight
-                size={16}
-                className="transition-transform duration-200 group-hover:translate-x-1"
-                aria-hidden="true"
-              />
             </Link>
             <Link
               href="/services"

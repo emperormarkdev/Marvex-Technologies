@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { Container, Eyebrow, Reveal } from "@/components/ui/primitives";
 import { BigCta } from "@/components/home/Closing";
 import RevealObserver from "@/components/ui/RevealObserver";
@@ -97,10 +96,9 @@ export default function ProcessPage() {
               </div>
               <Link
                 href="/contact"
-                className="btn-press inline-flex shrink-0 items-center gap-2 rounded-xl bg-brand px-7 py-3.5 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
+                className="btn-press inline-flex shrink-0 items-center justify-center rounded-xl bg-brand px-7 py-3.5 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
               >
                 Start a project
-                <ArrowRight size={15} aria-hidden="true" />
               </Link>
             </div>
           </Reveal>

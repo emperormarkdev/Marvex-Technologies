@@ -10,7 +10,7 @@ import {
   useScroll,
   useSpring,
 } from "framer-motion";
-import { ArrowRight, Moon, Sun } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { navLinks, siteConfig } from "@/data/content";
 
 export function Logo({ dark = false }: { dark?: boolean }) {
@@ -179,10 +179,9 @@ export default function Navbar() {
           <ThemeToggle />
           <Link
             href="/contact"
-            className="btn-press inline-flex items-center gap-2 rounded-xl bg-ink px-5 py-2.5 text-sm font-medium tracking-[-0.02em] text-surface hover:bg-brand hover:text-neutral-950"
+            className="btn-press inline-flex items-center justify-center rounded-xl bg-ink px-5 py-2.5 text-sm font-medium tracking-[-0.02em] text-surface hover:bg-brand hover:text-neutral-950"
           >
             Start a Project
-            <ArrowRight size={15} aria-hidden="true" />
           </Link>
         </div>
 
@@ -259,10 +258,9 @@ export default function Navbar() {
                 <Link
                   href="/contact"
                   onClick={() => setOpen(false)}
-                  className="btn-press flex items-center justify-center gap-2 rounded-xl bg-ink px-5 py-3 text-center text-sm font-medium text-surface"
+                  className="btn-press flex items-center justify-center rounded-xl bg-ink px-5 py-3 text-center text-sm font-medium text-surface"
                 >
                   Start a Project
-                  <ArrowRight size={15} aria-hidden="true" />
                 </Link>
               </li>
             </ul>

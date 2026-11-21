@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { Container, Eyebrow } from "@/components/ui/primitives";
 import { siteConfig } from "@/data/content";
 
@@ -127,10 +126,9 @@ export default function PrivacyPage() {
               </p>
               <Link
                 href="/contact"
-                className="btn-press mt-6 inline-flex items-center gap-2 rounded-xl bg-ink px-6 py-3 text-sm font-medium text-surface hover:bg-brand hover:text-neutral-950"
+                className="btn-press mt-6 inline-flex items-center justify-center rounded-xl bg-ink px-6 py-3 text-sm font-medium text-surface hover:bg-brand hover:text-neutral-950"
               >
                 Contact our team
-                <ArrowRight size={15} aria-hidden="true" />
               </Link>
             </div>
           </div>

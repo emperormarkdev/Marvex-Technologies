@@ -261,18 +261,13 @@ export function EngagementModels() {
                   <div className="mt-9">
                     <Link
                       href="/contact"
-                      className={`group btn-press inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold ${
+                      className={`btn-press inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold ${
                         featured
                           ? "bg-brand text-neutral-950 hover:bg-[#00db89]"
                           : "border border-line bg-surface-elevated text-ink hover:border-brand hover:bg-brand hover:text-neutral-950"
                       }`}
                     >
                       Discuss scope
-                      <ArrowRight
-                        size={15}
-                        className="transition-transform duration-200 group-hover:translate-x-0.5"
-                        aria-hidden="true"
-                      />
                     </Link>
                   </div>
                 </motion.div>

@@ -231,6 +231,25 @@ body {
   );
 }
 
+/* Uniform neutral grey treatment for all client logos in light & dark themes */
+.client-logo-grey {
+  filter: grayscale(1) opacity(0.85);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(:has(> head > meta[name="color-scheme"][content="light"])) {
+    .client-logo-grey {
+      filter: grayscale(1) brightness(1.35) opacity(0.85);
+    }
+  }
+}
+
+:root:has(> head > meta[name="color-scheme"][content="dark"]) {
+  .client-logo-grey {
+    filter: grayscale(1) brightness(1.35) opacity(0.85);
+  }
+}
+
 /* Clean architectural surfaces (no neon radial glows) */
 .hero-glow {
   background: var(--color-surface);

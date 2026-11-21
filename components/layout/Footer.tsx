@@ -125,10 +125,9 @@ export default function Footer() {
             </ul>
             <Link
               href="/contact"
-              className="btn-press mt-6 inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
+              className="btn-press mt-6 inline-flex items-center justify-center rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
             >
               Start a Project
-              <ArrowRight size={15} aria-hidden="true" />
             </Link>
           </div>
         </div>

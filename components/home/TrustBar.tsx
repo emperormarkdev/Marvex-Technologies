@@ -23,7 +23,7 @@ export default function TrustBar() {
                 height={40}
                 loading="lazy"
                 decoding="async"
-                className="pointer-events-none h-8 w-auto shrink-0 select-none object-contain sm:h-9"
+                className="client-logo-grey pointer-events-none h-8 w-auto shrink-0 select-none object-contain sm:h-9"
                 aria-hidden={i >= clients.length}
               />
             ))}

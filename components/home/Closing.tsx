@@ -9,7 +9,7 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { ArrowRight, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import {
   Container,
   Eyebrow,
@@ -38,14 +38,9 @@ export function Faq() {
               />
               <Link
                 href="/contact"
-                className="group btn-press mt-7 inline-flex items-center gap-2 rounded-xl bg-ink px-6 py-3.5 text-sm font-medium text-surface hover:bg-brand hover:text-neutral-950"
+                className="btn-press mt-7 inline-flex items-center justify-center rounded-xl bg-ink px-6 py-3.5 text-sm font-medium text-surface hover:bg-brand hover:text-neutral-950"
               >
                 Talk to our team
-                <ArrowRight
-                  size={15}
-                  className="transition-transform duration-200 group-hover:translate-x-0.5"
-                  aria-hidden="true"
-                />
               </Link>
             </div>
           </Reveal>
@@ -152,14 +147,9 @@ export function BigCta() {
             <div className="mt-8 flex flex-col justify-center gap-3.5 sm:flex-row">
               <Link
                 href="/contact"
-                className="group btn-press inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-8 py-4 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
+                className="btn-press inline-flex items-center justify-center rounded-xl bg-brand px-8 py-4 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
               >
                 Start a project
-                <ArrowRight
-                  size={16}
-                  className="transition-transform duration-200 group-hover:translate-x-1"
-                  aria-hidden="true"
-                />
               </Link>
               <Link
                 href="/process"

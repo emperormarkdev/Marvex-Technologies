@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { Container, Eyebrow, Reveal } from "@/components/ui/primitives";
 import { BigCta } from "@/components/home/Closing";
 import RevealObserver from "@/components/ui/RevealObserver";
@@ -66,10 +66,9 @@ export default function ServicesPage() {
                       </p>
                       <Link
                         href={`/contact?service=${s.slug}`}
-                        className="btn-press mt-7 inline-flex items-center gap-2 rounded-xl bg-ink px-6 py-3 text-sm font-medium text-surface hover:bg-brand hover:text-neutral-950"
+                        className="btn-press mt-7 inline-flex items-center justify-center rounded-xl bg-ink px-6 py-3 text-sm font-medium text-surface hover:bg-brand hover:text-neutral-950"
                       >
                         Discuss this capability
-                        <ArrowRight size={15} aria-hidden="true" />
                       </Link>
                     </div>
 

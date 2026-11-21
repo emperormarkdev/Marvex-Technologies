@@ -5,9 +5,11 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
-  ArrowRight,
   Calendar,
   CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
   Mail,
   MapPin,
   Phone,
@@ -35,28 +37,64 @@ const callTopics = [
   "Ongoing engineering & SLA",
 ];
 
-function getUpcomingBusinessDays(count: number) {
-  const days: { iso: string; dayLabel: string; dateLabel: string; date: Date }[] =
-    [];
+const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] as const;
+
+function toIsoDate(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+function getFirstAvailableBusinessDay(): Date {
   const cursor = new Date();
   cursor.setHours(0, 0, 0, 0);
   cursor.setDate(cursor.getDate() + 1);
-
-  while (days.length < count) {
-    const dow = cursor.getDay();
-    if (dow !== 0 && dow !== 6) {
-      const d = new Date(cursor);
-      const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-      const dayLabel = d.toLocaleDateString("en-US", { weekday: "short" });
-      const dateLabel = d.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-      });
-      days.push({ iso, dayLabel, dateLabel, date: d });
-    }
+  while (cursor.getDay() === 0 || cursor.getDay() === 6) {
     cursor.setDate(cursor.getDate() + 1);
   }
-  return days;
+  return cursor;
+}
+
+function buildCalendarMonthGrid(year: number, month: number) {
+  const firstOfMonth = new Date(year, month, 1);
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  // Convert JS Sunday=0..Saturday=6 into Monday=0..Sunday=6
+  const startOffset = (firstOfMonth.getDay() + 6) % 7;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const maxDate = new Date(today);
+  maxDate.setMonth(maxDate.getMonth() + 3);
+
+  const cells: Array<{
+    iso: string;
+    dayNumber: number;
+    date: Date;
+    isToday: boolean;
+    disabled: boolean;
+  } | null> = [];
+
+  for (let i = 0; i < startOffset; i++) {
+    cells.push(null);
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const d = new Date(year, month, day);
+    d.setHours(0, 0, 0, 0);
+    const dow = d.getDay();
+    const isWeekend = dow === 0 || dow === 6;
+    const isPastOrToday = d.getTime() <= today.getTime();
+    const isTooFar = d.getTime() > maxDate.getTime();
+
+    cells.push({
+      iso: toIsoDate(d),
+      dayNumber: day,
+      date: d,
+      isToday: d.getTime() === today.getTime(),
+      disabled: isWeekend || isPastOrToday || isTooFar,
+    });
+  }
+
+  return cells;
 }
 
 function formatIcsUtc(date: Date) {
@@ -168,12 +206,18 @@ function ContactInner() {
   const [inquiryStatus, setInquiryStatus] = useState<
     "idle" | "submitting" | "sent" | "error"
   >("idle");
+  const [inquiryDelivered, setInquiryDelivered] = useState(true);
+  const [inquiryMailto, setInquiryMailto] = useState("");
   const [inquiryError, setInquiryError] = useState("");
 
-  // Call scheduler state
-  const upcomingDays = useMemo(() => getUpcomingBusinessDays(6), []);
-  const [selectedDayIso, setSelectedDayIso] = useState(
-    () => upcomingDays[0]?.iso ?? ""
+  // Interactive month calendar state
+  const initialDate = useMemo(() => getFirstAvailableBusinessDay(), []);
+  const [selectedDate, setSelectedDate] = useState<Date>(initialDate);
+  const [viewYear, setViewYear] = useState<number>(() =>
+    initialDate.getFullYear()
+  );
+  const [viewMonth, setViewMonth] = useState<number>(() =>
+    initialDate.getMonth()
   );
   const [selectedSlotIdx, setSelectedSlotIdx] = useState(0);
   const [callTopic, setCallTopic] = useState(callTopics[0]);
@@ -187,11 +231,60 @@ function ContactInner() {
   const [callStatus, setCallStatus] = useState<
     "idle" | "submitting" | "booked" | "error"
   >("idle");
+  const [callDelivered, setCallDelivered] = useState(true);
+  const [callMailto, setCallMailto] = useState("");
   const [callError, setCallError] = useState("");
 
-  const selectedDay =
-    upcomingDays.find((d) => d.iso === selectedDayIso) ?? upcomingDays[0];
+  const selectedIso = useMemo(() => toIsoDate(selectedDate), [selectedDate]);
   const selectedSlot = timeSlots[selectedSlotIdx] ?? timeSlots[0];
+
+  const monthCells = useMemo(
+    () => buildCalendarMonthGrid(viewYear, viewMonth),
+    [viewYear, viewMonth]
+  );
+
+  const monthLabel = useMemo(
+    () =>
+      new Date(viewYear, viewMonth, 1).toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+      }),
+    [viewYear, viewMonth]
+  );
+
+  const formattedSelectedDate = useMemo(
+    () =>
+      selectedDate.toLocaleDateString("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+    [selectedDate]
+  );
+
+  const canGoPrevMonth = useMemo(() => {
+    const now = new Date();
+    return (
+      viewYear > now.getFullYear() ||
+      (viewYear === now.getFullYear() && viewMonth > now.getMonth())
+    );
+  }, [viewYear, viewMonth]);
+
+  const canGoNextMonth = useMemo(() => {
+    const limit = new Date();
+    limit.setMonth(limit.getMonth() + 3);
+    return (
+      viewYear < limit.getFullYear() ||
+      (viewYear === limit.getFullYear() && viewMonth < limit.getMonth())
+    );
+  }, [viewYear, viewMonth]);
+
+  const shiftMonth = (delta: -1 | 1) => {
+    const next = new Date(viewYear, viewMonth + delta, 1);
+    setViewYear(next.getFullYear());
+    setViewMonth(next.getMonth());
+  };
 
   const set =
     (k: keyof typeof form) =>
@@ -203,9 +296,8 @@ function ContactInner() {
       setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const triggerInviteDownload = () => {
-    if (!selectedDay) return;
     downloadCalendarInvite({
-      date: selectedDay.date,
+      date: selectedDate,
       hour: selectedSlot.hour,
       minute: selectedSlot.minute,
       topic: callTopic,
@@ -241,6 +333,9 @@ function ContactInner() {
       });
       const data = (await res.json().catch(() => ({}))) as {
         ok?: boolean;
+        delivered?: boolean;
+        subject?: string;
+        text?: string;
         error?: string;
       };
       if (!res.ok || !data.ok) {
@@ -249,6 +344,12 @@ function ContactInner() {
         );
         setInquiryStatus("error");
         return;
+      }
+      setInquiryDelivered(Boolean(data.delivered));
+      if (!data.delivered && data.subject && data.text) {
+        setInquiryMailto(
+          `mailto:${siteConfig.emailRecipient}?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(data.text)}`
+        );
       }
       setInquiryStatus("sent");
     } catch {
@@ -264,17 +365,13 @@ function ContactInner() {
     setCallStatus("submitting");
     setCallError("");
 
-    const dateStr = selectedDay
-      ? `${selectedDay.dayLabel}, ${selectedDay.dateLabel}`
-      : "";
-
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           type: "call",
-          date: dateStr,
+          date: formattedSelectedDate,
           time: selectedSlot.label,
           topic: callTopic,
           name: callForm.name,
@@ -286,6 +383,9 @@ function ContactInner() {
       });
       const data = (await res.json().catch(() => ({}))) as {
         ok?: boolean;
+        delivered?: boolean;
+        subject?: string;
+        text?: string;
         error?: string;
       };
       if (!res.ok || !data.ok) {
@@ -294,6 +394,12 @@ function ContactInner() {
         );
         setCallStatus("error");
         return;
+      }
+      setCallDelivered(Boolean(data.delivered));
+      if (!data.delivered && data.subject && data.text) {
+        setCallMailto(
+          `mailto:${siteConfig.emailRecipient}?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(data.text)}`
+        );
       }
       setCallStatus("booked");
       triggerInviteDownload();
@@ -403,6 +509,14 @@ function ContactInner() {
                             within one business day.
                           </p>
                           <div className="mt-6 flex flex-wrap justify-center gap-3">
+                            {!inquiryDelivered && inquiryMailto && (
+                              <a
+                                href={inquiryMailto}
+                                className="btn-press inline-flex items-center justify-center rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
+                              >
+                                Send copy via email app
+                              </a>
+                            )}
                             <button
                               type="button"
                               onClick={() => {
@@ -583,16 +697,11 @@ function ContactInner() {
                               type="submit"
                               disabled={inquiryStatus === "submitting"}
                               aria-busy={inquiryStatus === "submitting"}
-                              className="btn-press inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-7 py-3.5 text-sm font-semibold text-neutral-950 hover:bg-[#00db89] disabled:cursor-not-allowed disabled:opacity-70"
+                              className="btn-press inline-flex items-center justify-center rounded-xl bg-brand px-7 py-3.5 text-sm font-semibold text-neutral-950 hover:bg-[#00db89] disabled:cursor-not-allowed disabled:opacity-70"
                             >
-                              {inquiryStatus === "submitting" ? (
-                                "Sending inquiry..."
-                              ) : (
-                                <>
-                                  Submit inquiry
-                                  <ArrowRight size={15} aria-hidden="true" />
-                                </>
-                              )}
+                              {inquiryStatus === "submitting"
+                                ? "Sending inquiry..."
+                                : "Submit inquiry"}
                             </button>
                             <p className="mt-3 text-xs text-muted">
                               By submitting, you agree to our{" "}
@@ -626,13 +735,13 @@ function ContactInner() {
                             <Calendar size={26} aria-hidden="true" />
                           </span>
                           <h2 className="mt-5 font-display text-2xl font-semibold tracking-[-0.03em] text-ink">
-                            Discovery call requested
+                            Discovery call scheduled
                           </h2>
                           <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">
-                            Your request for{" "}
+                            Your booking for{" "}
                             <strong className="text-ink">
-                              {selectedDay?.dayLabel}, {selectedDay?.dateLabel}{" "}
-                              at {selectedSlot.label} (WAT)
+                              {formattedSelectedDate} at {selectedSlot.label}{" "}
+                              (WAT)
                             </strong>{" "}
                             has been sent to our team. We&apos;ll send a meeting
                             confirmation to{" "}
@@ -643,10 +752,18 @@ function ContactInner() {
                             been downloaded.
                           </p>
                           <div className="mt-6 flex flex-wrap justify-center gap-3">
+                            {!callDelivered && callMailto && (
+                              <a
+                                href={callMailto}
+                                className="btn-press inline-flex items-center justify-center rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
+                              >
+                                Send copy via email app
+                              </a>
+                            )}
                             <button
                               type="button"
                               onClick={triggerInviteDownload}
-                              className="btn-press inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
+                              className="btn-press inline-flex items-center justify-center rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-neutral-950 hover:bg-[#00db89]"
                             >
                               Download .ics again
                             </button>
@@ -677,60 +794,160 @@ function ContactInner() {
                             aria-hidden="true"
                           />
 
-                          <div>
-                            <p className="mb-2.5 text-xs font-medium text-ink">
-                              Day
-                            </p>
-                            <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
-                              {upcomingDays.map((d) => {
-                                const active = d.iso === selectedDayIso;
-                                return (
+                          <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+                            {/* Monthly calendar date picker */}
+                            <div className="rounded-2xl border border-line bg-surface p-4 sm:p-5">
+                              <div className="flex items-center justify-between gap-2 pb-3">
+                                <p className="font-display text-sm font-semibold tracking-[-0.02em] text-ink">
+                                  {monthLabel}
+                                </p>
+                                <div className="flex items-center gap-1">
                                   <button
-                                    key={d.iso}
                                     type="button"
-                                    onClick={() => setSelectedDayIso(d.iso)}
-                                    aria-pressed={active}
-                                    className={`rounded-xl border px-3 py-3 text-center transition-colors ${
-                                      active
-                                        ? "border-brand bg-brand text-neutral-950"
-                                        : "border-line bg-surface text-ink hover:border-brand"
-                                    }`}
+                                    onClick={() => shiftMonth(-1)}
+                                    disabled={!canGoPrevMonth}
+                                    aria-label="Previous month"
+                                    className="grid h-8 w-8 place-items-center rounded-lg border border-line bg-surface-card text-ink transition-colors hover:border-brand disabled:cursor-not-allowed disabled:opacity-35"
                                   >
-                                    <span className="block text-[11px] font-medium opacity-80">
-                                      {d.dayLabel}
-                                    </span>
-                                    <span className="mt-0.5 block text-sm font-semibold">
-                                      {d.dateLabel}
-                                    </span>
+                                    <ChevronLeft size={15} aria-hidden="true" />
                                   </button>
-                                );
-                              })}
-                            </div>
-                          </div>
+                                  <button
+                                    type="button"
+                                    onClick={() => shiftMonth(1)}
+                                    disabled={!canGoNextMonth}
+                                    aria-label="Next month"
+                                    className="grid h-8 w-8 place-items-center rounded-lg border border-line bg-surface-card text-ink transition-colors hover:border-brand disabled:cursor-not-allowed disabled:opacity-35"
+                                  >
+                                    <ChevronRight
+                                      size={15}
+                                      aria-hidden="true"
+                                    />
+                                  </button>
+                                </div>
+                              </div>
 
-                          <div>
-                            <p className="mb-2.5 text-xs font-medium text-ink">
-                              Time (WAT)
-                            </p>
-                            <div className="flex flex-wrap gap-2">
-                              {timeSlots.map((slot, idx) => {
-                                const active = idx === selectedSlotIdx;
-                                return (
-                                  <button
-                                    key={slot.label}
-                                    type="button"
-                                    onClick={() => setSelectedSlotIdx(idx)}
-                                    aria-pressed={active}
-                                    className={`min-h-10 rounded-xl border px-4 py-2 text-sm font-medium transition-colors ${
-                                      active
-                                        ? "border-brand bg-brand text-neutral-950"
-                                        : "border-line bg-surface text-ink hover:border-brand"
-                                    }`}
-                                  >
-                                    {slot.label}
-                                  </button>
-                                );
-                              })}
+                              <div
+                                className="grid grid-cols-7 gap-1 border-t border-line pt-3 text-center text-[11px] font-medium text-muted"
+                                aria-hidden="true"
+                              >
+                                {WEEKDAYS.map((wd) => (
+                                  <span key={wd} className="py-1">
+                                    {wd}
+                                  </span>
+                                ))}
+                              </div>
+
+                              <div
+                                role="grid"
+                                aria-label={monthLabel}
+                                className="mt-1 grid grid-cols-7 gap-1"
+                              >
+                                {monthCells.map((cell, idx) => {
+                                  if (!cell) {
+                                    return (
+                                      <span
+                                        key={`empty-${idx}`}
+                                        className="h-9"
+                                        aria-hidden="true"
+                                      />
+                                    );
+                                  }
+                                  const active = cell.iso === selectedIso;
+                                  return (
+                                    <button
+                                      key={cell.iso}
+                                      type="button"
+                                      disabled={cell.disabled}
+                                      onClick={() => setSelectedDate(cell.date)}
+                                      aria-pressed={active}
+                                      aria-label={cell.date.toLocaleDateString(
+                                        "en-US",
+                                        {
+                                          weekday: "long",
+                                          month: "long",
+                                          day: "numeric",
+                                          year: "numeric",
+                                        }
+                                      )}
+                                      className={`relative flex h-9 w-full items-center justify-center rounded-lg text-xs font-medium transition-colors ${
+                                        active
+                                          ? "bg-brand font-semibold text-neutral-950"
+                                          : cell.disabled
+                                            ? "cursor-not-allowed text-muted/35"
+                                            : "text-ink hover:bg-mist hover:ring-1 hover:ring-brand"
+                                      }`}
+                                    >
+                                      {cell.dayNumber}
+                                      {cell.isToday && !active && (
+                                        <span
+                                          className="absolute bottom-1 h-1 w-1 rounded-full bg-brand-dark"
+                                          aria-hidden="true"
+                                        />
+                                      )}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+
+                              <p className="mt-3 border-t border-line pt-2.5 text-[11px] text-muted">
+                                Available Monday – Friday · West Africa Time
+                                (WAT)
+                              </p>
+                            </div>
+
+                            {/* Time slot picker & selected summary */}
+                            <div className="flex flex-col justify-between rounded-2xl border border-line bg-surface p-4 sm:p-5">
+                              <div>
+                                <div className="flex items-center justify-between gap-2">
+                                  <p className="font-display text-sm font-semibold tracking-[-0.02em] text-ink">
+                                    Select time (WAT)
+                                  </p>
+                                  <span className="inline-flex items-center gap-1 text-xs text-muted">
+                                    <Clock size={13} aria-hidden="true" />
+                                    30 min
+                                  </span>
+                                </div>
+
+                                <div className="mt-3.5 grid grid-cols-2 gap-2 sm:grid-cols-1">
+                                  {timeSlots.map((slot, idx) => {
+                                    const active = idx === selectedSlotIdx;
+                                    return (
+                                      <button
+                                        key={slot.label}
+                                        type="button"
+                                        onClick={() => setSelectedSlotIdx(idx)}
+                                        aria-pressed={active}
+                                        className={`flex min-h-10 items-center justify-between rounded-xl border px-3.5 py-2 text-xs font-medium transition-colors ${
+                                          active
+                                            ? "border-brand bg-brand font-semibold text-neutral-950"
+                                            : "border-line bg-surface-card text-ink hover:border-brand"
+                                        }`}
+                                      >
+                                        <span>{slot.label}</span>
+                                        <span
+                                          className={`text-[11px] ${
+                                            active
+                                              ? "text-neutral-900"
+                                              : "text-muted"
+                                          }`}
+                                        >
+                                          WAT
+                                        </span>
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+
+                              <div className="mt-4 rounded-xl border border-line bg-mist px-3.5 py-3">
+                                <p className="text-[11px] font-medium text-muted">
+                                  Selected slot
+                                </p>
+                                <p className="mt-0.5 text-xs font-semibold text-ink">
+                                  {formattedSelectedDate} · {selectedSlot.label}{" "}
+                                  WAT
+                                </p>
+                              </div>
                             </div>
                           </div>
 
@@ -875,16 +1092,11 @@ function ContactInner() {
                               type="submit"
                               disabled={callStatus === "submitting"}
                               aria-busy={callStatus === "submitting"}
-                              className="btn-press inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-7 py-3.5 text-sm font-semibold text-neutral-950 hover:bg-[#00db89] disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+                              className="btn-press inline-flex w-full items-center justify-center rounded-xl bg-brand px-7 py-3.5 text-sm font-semibold text-neutral-950 hover:bg-[#00db89] disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
                             >
-                              {callStatus === "submitting" ? (
-                                "Reserving slot..."
-                              ) : (
-                                <>
-                                  Reserve discovery call
-                                  <ArrowRight size={15} aria-hidden="true" />
-                                </>
-                              )}
+                              {callStatus === "submitting"
+                                ? "Reserving slot..."
+                                : "Reserve discovery call"}
                             </button>
                           </div>
                         </form>
@@ -945,16 +1157,20 @@ function ContactInner() {
                     What happens next
                   </h2>
                   <ol className="mt-3 space-y-2.5 text-sm leading-relaxed text-muted">
-                    <li>1. An engineer reviews your note within one business day.</li>
+                    <li>
+                      1. An engineer reviews your note within one business day.
+                    </li>
                     <li>2. We schedule a focused 30-minute technical call.</li>
-                    <li>3. You receive a written architecture plan and fixed terms.</li>
+                    <li>
+                      3. You receive a written architecture plan and fixed
+                      terms.
+                    </li>
                   </ol>
                   <Link
                     href="/process"
-                    className="btn-press mt-5 inline-flex items-center gap-2 rounded-xl border border-line bg-surface-elevated px-4 py-2.5 text-sm font-medium text-ink hover:border-brand"
+                    className="btn-press mt-5 inline-flex items-center justify-center rounded-xl border border-line bg-surface-elevated px-4 py-2.5 text-sm font-medium text-ink hover:border-brand"
                   >
                     View methodology
-                    <ArrowRight size={15} aria-hidden="true" />
                   </Link>
                 </div>
               </aside>
